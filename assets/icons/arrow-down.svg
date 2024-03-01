@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" fill="#ffffff" version="1.2" baseProfile="tiny" width="24" height="24"
+    viewBox="0 0 24 24">
+    <path
+        d="M5.8 9.7L12 16l6.2-6.3c.2-.2.3-.5.3-.7s-.1-.5-.3-.7c-.2-.2-.4-.3-.7-.3h-11c-.3 0-.5.1-.7.3-.2.2-.3.4-.3.7s.1.5.3.7z" />
+    <metadata>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+            xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+            <rdf:Description about="https://iconscout.com/legal#licenses" dc:title="arrow,sorted,down"
+                dc:description="arrow,sorted,down" dc:publisher="Iconscout" dc:date="2017-09-24"
+                dc:format="image/svg+xml" dc:language="en">
+                <dc:creator>
+                    <rdf:Bag>
+                        <rdf:li>Typicons</rdf:li>
+                    </rdf:Bag>
+                </dc:creator>
+            </rdf:Description>
+        </rdf:RDF>
+    </metadata>
+</svg>
