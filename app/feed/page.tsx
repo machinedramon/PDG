@@ -1,15 +1,11 @@
 import React from "react";
-import Nav from "@/components/Feed/Nav";
-import Sidebar from "@/components/Feed/Sidebar";
-import { createClient } from "@/utils/supabase/server";
+import dynamic from "next/dynamic";
+import Nav from "../../components/Feed/Nav";
+import Content from "@/components/Feed/Content";
 
-export default async function Feed() {
-  const supabase = createClient();
+const Sidebar = dynamic(() => import("../../components/Feed/Sidebar"));
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+export default function Feed() {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar (Área 2) */}
@@ -27,7 +23,9 @@ export default async function Feed() {
         {/* Conteúdo Principal e Áreas 4 e 5 */}
         <div className="flex flex-1">
           {/* Conteúdo Principal (Área 3) */}
-          <div className="bg-primaryBlack flex-1">Main Content</div>
+          <div className="bg-primaryBlack flex-1">
+            <Content />
+          </div>
 
           {/* Container para Áreas 4 e 5 */}
           <div className="flex flex-col w-72">

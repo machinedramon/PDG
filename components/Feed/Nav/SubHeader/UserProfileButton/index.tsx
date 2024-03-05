@@ -1,8 +1,8 @@
-import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
-import UserProfilePopover from "./UserProfilePopover";
+import { createClient } from "@/utils/supabase/server";
+import UserProfilePopover from "../UserProfilePopover";
 
-export default async function AuthButton() {
+export default async function UserProfileButton() {
   const supabase = createClient();
 
   const {
