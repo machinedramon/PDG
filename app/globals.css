@@ -17,6 +17,12 @@
   background-color: #181820;
 }
 
+body {
+  /* background-color: #1c1917; */
+  /* color: #f7fafc; */
+  box-sizing: border-box;
+}
+
 /* @layer base {
   :root {
     --background: 200 20% 98%;
