@@ -3,6 +3,7 @@ import Nav from "../../components/Feed/Nav";
 import Content from "@/components/Feed/Content";
 
 const Sidebar = dynamic(() => import("../../components/Feed/Sidebar"));
+import GoogleAdSense from "@/components/Feed/Ad";
 
 export default function Feed() {
   return (
@@ -11,6 +12,8 @@ export default function Feed() {
       <div className="bg-secondaryBlack w-64 h-screen fixed border-r border-[#29292F]">
         <Sidebar />
       </div>
+
+      <GoogleAdSense />
 
       {/* Container para Header, Conteúdo Principal, Áreas 4 e 5 */}
       <div className="pl-64 flex flex-col w-full">
