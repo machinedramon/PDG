@@ -6,7 +6,7 @@ import { createClient } from "@/utils/supabase/client";
 import seeMoreIcon from "../../../../assets/icons/arrow-down.svg";
 import groupDefaultIcon from "../../../../assets/icons/dual.svg";
 import RoleChip from "../RoleChip";
-import SidebarMenuSkeleton from "../Skeletons/SidebarMenuSkeleton";
+import SidebarShortcutsSkeleton from "../Skeletons/SidebarShortcutsSkeleton";
 import formatGroupMembersCount from "@/utils/functions/formatGroupMembersCount";
 import Link from "next/link";
 import truncateText from "@/utils/functions/truncateText";
@@ -71,7 +71,7 @@ export default function Shortcuts() {
     return (
       <>
         <p className="font-bold text-sm pt-4">Your Shortcuts</p>
-        <SidebarMenuSkeleton />
+        <SidebarShortcutsSkeleton />
       </>
     );
   }
@@ -86,31 +86,31 @@ export default function Shortcuts() {
           <motion.button
             key={group.group_id}
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "3.5rem" }}
+            animate={{ opacity: 1, height: "6rem" }}
             exit={{
               opacity: 0,
               height: 0,
               transition: { duration: 0.1 },
             }}
             transition={{ duration: 0.5 }}
-            className="flex items-center w-full h-14 my-2 hover:bg-[#29292F] rounded-md transition duration-300 cursor-pointer"
+            className="flex items-center w-full h-24 my-2 hover:bg-[#29292F] rounded-md transition duration-300 cursor-pointer"
           >
             <Image
               src={group.avatar_url || groupDefaultIcon}
               alt="Group Avatar"
-              className="rounded-full bg-[#333339] mx-2 hover:scale-105 transition-all"
-              style={{ width: 44, height: 44 }}
+              className="rounded-full bg-[#333339] mx-2 hover:scale-110 duration-300 transition-all"
+              style={{ width: 48, height: 48 }}
             />
-            <div className="flex w-full flex-col items-start">
-              <div className="ml-4 truncate">{truncateText(group.name)}</div>
-              <span className="ml-2 flex items-center space-x-2">
-                <RoleChip role={group.role} />
-                <Link href={"/"}>
-                  <span className="text-xs hover:bg-[#181820] py-1 px-2 rounded-md hover:px-3 group-hover:scale-110 transition-all">
-                    Members: {formatGroupMembersCount(group.members_count)}
-                  </span>
-                </Link>
-              </span>
+            <div className="flex w-full flex-col items-start space-y-1">
+              <RoleChip role={group.role} />
+              <div className="ml-2 truncate">
+                {truncateText(group.name, 16)}
+              </div>
+              <Link href={"/"} className="transition-all">
+                <span className="text-xs hover:bg-[#181820] py-1 px-2 rounded-md hover:px-3 hover:ml-2 duration-300 transition-all">
+                  Members: {formatGroupMembersCount(group.members_count)}
+                </span>
+              </Link>
             </div>
           </motion.button>
         ))}
@@ -120,21 +120,21 @@ export default function Shortcuts() {
       {groups.length > 3 && (
         <motion.button
           onClick={() => setIsShortcutsExpanded(!isShortcutsExpanded)}
-          className="flex items-center justify-center w-full h-8 my-2 space-x-2 bg-[#29292F] hover:bg-[#36363e] rounded-md transition duration-300 cursor-pointer"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0 }}
+          className="flex items-center justify-center w-full h-8 my-2 space-x-2 bg-[#29292F] hover:bg-[#36363e] rounded-md duration-300 transition cursor-pointer"
+          initial={{ opacity: 0.5 }}
+          whileHover={{ opacity: 1 }}
         >
           <Image
             src={seeMoreIcon}
             alt="See More"
-            className={`transition-transform duration-300 ${
+            width={22}
+            height={22}
+            className={`duration-300 transition-transform ${
               isShortcutsExpanded ? "rotate-180" : "rotate-0"
             }`}
-            style={{ width: 22, height: 22 }}
           />
           <span className="text-sm">
-            {isShortcutsExpanded ? "See Less" : "See more"}
+            {isShortcutsExpanded ? "See Less" : "See More"}
           </span>
         </motion.button>
       )}

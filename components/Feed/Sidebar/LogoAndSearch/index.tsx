@@ -6,9 +6,13 @@ import searchIcon from "../../../../assets/icons/search.svg";
 export default function LogoAndSearch() {
   return (
     <>
-      <span className="font-bold text-xl">PDG?</span>
+      <span className="font-bold text-xl mr-4">PDG?</span>
       <div className="flex items-center bg-white rounded-full px-2 py-1 space-x-2">
-        <Image src={searchIcon} alt="Search" style={{ width: 14, height: 14 }}  />
+        <Image
+          src={searchIcon}
+          alt="Search"
+          style={{ width: 14, height: 14 }}
+        />
         <input
           type="text"
           placeholder="Search here"

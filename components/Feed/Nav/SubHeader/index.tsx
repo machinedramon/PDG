@@ -18,7 +18,7 @@ export default function SubHeader() {
   const isSupabaseConnected = canInitSupabaseClient();
 
   return (
-    <div className="flex items-center h-full justify-end  space-x-4 w-72 pr-8">
+    <div className="flex items-center h-full justify-end  space-x-4 w-64 pr-8">
       <button className="bg-[#333339] p-2 rounded-full hover:scale-110 hover:bg-[#444349] transition duration-300">
         <Image
           src={dashboardIcon}

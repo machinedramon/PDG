@@ -48,7 +48,7 @@ export default function Menu() {
   }
 
   return (
-    <>
+    <div className="w-full">
       <AnimatePresence>
         {menuItemsData.map((item, index) => (
           <motion.button
@@ -61,8 +61,8 @@ export default function Menu() {
             <Image
               src={item.icon}
               alt={item.label}
-              width={32}
-              height={32}
+              width={28}
+              height={28}
               className="mx-2"
             />
             <span className="ml-4">{item.label}</span>
@@ -89,6 +89,6 @@ export default function Menu() {
           {isMenuExpanded ? "See Less" : "See More"}
         </span>
       </motion.button>
-    </>
+    </div>
   );
 }
