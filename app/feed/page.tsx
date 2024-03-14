@@ -15,22 +15,6 @@ declare global {
 export default function Feed() {
   return (
     <div className="flex min-h-screen">
-      <Head>
-        <script
-          src="https://alwingulla.com/88/tag.min.js"
-          data-zone="51028"
-          async
-          data-cfasync="false"
-        ></script>
-        <script src="/monetagscript.js" async data-cfasync="false"></script>
-        <script
-          src="//phicmune.net/ntfc.php?p=7216313"
-          data-cfasync="false"
-          async
-          onError={() => window._vawqicun()}
-          onLoad={() => window._grepqmu()}
-        ></script>
-      </Head>
       {/* Sidebar */}
       <div className="bg-secondaryBlack w-64 h-screen fixed border-r border-[#29292F]">
         <Sidebar />
