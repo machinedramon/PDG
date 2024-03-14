@@ -3,8 +3,11 @@
 import Link from "next/link";
 import { SubmitButton } from "./submit-button";
 
-import { signIn, signUp } from './sign-functions'
+import { signIn } from './sign-functions'
 import { useState } from "react";
+
+import logoPDG from '../../../assets/logo/PDG.svg'
+import Image from "next/image";
 
 export default function Login({
   searchParams,
@@ -19,22 +22,18 @@ export default function Login({
   };
 
   return (
-    <div className="mx-auto bg-neutral-900/[.80] min-h-screen flex justify-center items-center">
+    <div className="mx-auto bg-zinc-900 min-h-screen flex justify-center items-center">
       <div className="max-w-screen-lg flex flex-row px-4">
         <div className="flex items-center">
-
           <p className='text-4xl text-slate-100'>
             Compartilhe seus momentos épicos.<br />
             Sua jornada gamer, nossa comunidade.<br />
             PDG, onde as histórias de jogos ganham vida!
           </p>
         </div>
-        <div className="bg-neutral-900/[.90] p-4 w-fit rounded-lg flex-1">
-          {/* <p className='font-bold text-[5rem] text-gray-50 text-center'>
-              PDG
-            </p> */}
+        <div className="bg-blue-950/[.30] p-4 w-fit rounded-lg flex-1">
 
-          <img src='./PDG.svg' alt="PDG" className="h-40 w-auto mb-6" />
+          <Image src={logoPDG} alt="PDG" className="h-40 w-auto mb-6" />
 
           {loginOption ?
             <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
@@ -45,7 +44,8 @@ export default function Login({
               <input
                 className="rounded-md px-4 py-2 bg-inherit border mb-6 placeholder:text-slate-50 text-slate-50 focus:bg-slate-800"
                 name="email"
-                placeholder="Email"
+                type="email"
+                placeholder="Email*"
                 required
               />
               <label className="text-md hidden" htmlFor="password">
@@ -55,7 +55,7 @@ export default function Login({
                 className="rounded-md px-4 py-2 bg-inherit border mb-6 placeholder:text-slate-50 text-slate-50 focus:bg-slate-800"
                 type="password"
                 name="password"
-                placeholder="Senha"
+                placeholder="Senha*"
                 required
               />
               <SubmitButton
@@ -78,13 +78,12 @@ export default function Login({
                 Não possui conta?
               </p>
 
-              <SubmitButton
-                formAction={signUp}
-                className="rounded-md px-4 py-2 text-foreground mb-2 bg-violet-400 text-slate-50 hover:bg-violet-600 active:bg-violet-500 transition-all font-bold"
-                pendingText="Redirecionando..."
+              <Link
+                href="/subscribe"
+                className="rounded-md px-4 py-2 text-foreground mb-2 bg-violet-400 text-slate-50 hover:bg-violet-600 active:bg-violet-500 transition-all font-bold text-center"
               >
                 Cadastre-se
-              </SubmitButton>
+              </Link>
               {searchParams?.message && (
                 <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
                   {searchParams.message}
@@ -116,14 +115,12 @@ export default function Login({
               >
                 Voltar
               </button>
-
               {searchParams?.message && (
                 <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
                   {searchParams.message}
                 </p>
               )}
             </form>
-
           }
         </div>
       </div>
