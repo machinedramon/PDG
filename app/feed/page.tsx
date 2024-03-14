@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import Head from "next/head";
 import Nav from "../../components/Feed/Nav";
 import Content from "@/components/Feed/Content";
 
