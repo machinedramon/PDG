@@ -16,24 +16,24 @@ const Content: React.FC = () => {
     prev: () => {},
   });
 
-  useEffect(() => {
-    function startScript() {
-      window._vawqicun =
-        window._vawqicun || (() => console.log("_vawqicun executada"));
-      window._grepqmu =
-        window._grepqmu || (() => console.log("_grepqmu executada"));
-      return (
-        <Script
-          src="//itweepinbelltor.com/ntfc.php?p=7216313"
-          async
-          onError={window._vawqicun}
-          onLoad={window._grepqmu}
-        ></Script>
-      );
-    }
+  // useEffect(() => {
+  //   function startScript() {
+  //     window._vawqicun =
+  //       window._vawqicun || (() => console.log("_vawqicun executada"));
+  //     window._grepqmu =
+  //       window._grepqmu || (() => console.log("_grepqmu executada"));
+  //     return (
+  //       <Script
+  //         src="//itweepinbelltor.com/ntfc.php?p=7216313"
+  //         async
+  //         onError={window._vawqicun}
+  //         onLoad={window._grepqmu}
+  //       ></Script>
+  //     );
+  //   }
 
-    startScript();
-  }, []);
+  //   startScript();
+  // }, []);
 
   return (
     <div className="h-full max-h-[86vh] w-full max-w-xl 2xl:max-w-2xl mx-auto overflow-y-scroll space-y-4 px-4">
