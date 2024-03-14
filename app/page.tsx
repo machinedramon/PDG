@@ -1,3 +1,4 @@
+import Head from "next/head";
 import AuthButton from "../components/Feed/Nav/SubHeader/UserProfileButton";
 import { createClient } from "@/utils/supabase/server";
 
@@ -17,6 +18,22 @@ export default async function Index() {
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center bg-primaryBlack">
+      <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              var atOptions = {
+                'key' : '792791fbe37ca573f3dbe9bd723f172c',
+                'format' : 'iframe',
+                'height' : 250,
+                'width' : 300,
+                'params' : {}
+              };
+              document.write('<scr' + 'ipt type="text/javascript" src="//www.topcreativeformat.com/792791fbe37ca573f3dbe9bd723f172c/invoke.js"></scr' + 'ipt>');
+            `,
+          }}
+        />
+      </Head>
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16 bg-secondaryBlack">
         <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
           {isSupabaseConnected && <AuthButton />}
