@@ -5,6 +5,13 @@ import Content from "@/components/Feed/Content";
 
 const Sidebar = dynamic(() => import("../../components/Feed/Sidebar"));
 
+declare global {
+  interface Window {
+    _vawqicun: () => void;
+    _grepqmu: () => void;
+  }
+}
+
 export default function Feed() {
   return (
     <div className="flex min-h-screen">
