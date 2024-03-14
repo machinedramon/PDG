@@ -64,13 +64,7 @@ const Post = ({
 
       {/* Post image */}
       <div className="w-full">
-        <Image
-          src={imageSrc}
-          alt="Post image"
-          layout="responsive"
-          width={600} // Ajuste a largura conforme a necessidade do seu layout
-          height={400} // Ajuste a altura conforme a necessidade do seu layout
-        />
+        <Image src={imageSrc} alt="Post image" width={600} height={400} />
       </div>
 
       {caption && (

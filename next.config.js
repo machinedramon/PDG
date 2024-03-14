@@ -3,8 +3,6 @@
  */
 const nextConfig = {
   images: {
-    domains: ["pvamqafnjkxygruqsnax.supabase.co"], // Adicione aqui os domínios de onde você está carregando imagens
-    // remotePatterns opcional para especificações mais detalhadas
     remotePatterns: [
       {
         protocol: "https",
@@ -12,6 +10,7 @@ const nextConfig = {
         // você pode especificar uma porta e um padrão de caminho, se necessário
         // port: '',
         // pathname: '/storage/v1/object/public/**',
+        pathname: "**",
       },
     ],
   },

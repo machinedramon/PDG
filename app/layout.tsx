@@ -1,7 +1,6 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { PostProvider } from "@/utils/contexts/PostContext";
-import Head from "next/head";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`

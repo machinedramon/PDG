@@ -261,14 +261,14 @@ export default function Stories({ setSliderMethods }: any) {
         {/* Condicional para renderizar esqueletos ou stories reais */}
         {isLoadingStories
           ? [...Array(4)].map((_, index) => (
-              <div className="p-2">
+              <div className="p-2" key={`skeleton-${index}`}>
                 <StorySkeleton />
               </div>
             ))
           : stories.length > 0
           ? stories.map((story, index) => (
               <motion.div
-                key={`${index}`}
+                key={`story-${index}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.01 }}
@@ -279,7 +279,7 @@ export default function Stories({ setSliderMethods }: any) {
             ))
           : [...Array(3)].map((_, index) => (
               <motion.div
-                key={`${index}`}
+                key={`template-${index}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.01 }}
