@@ -16,35 +16,26 @@
 
 /* width */
 *::-webkit-scrollbar {
-  width: 8px;
+  scrollbar-width: thin;
 }
 
 /* Added here the linear gradient. From 0% to 100%. Use rgba for better results */
 *::-webkit-scrollbar-track {
-  background: linear-gradient(0deg, #36363e, #36363e 0%, #29292f, #29292f 100%);
+  background: #29292f;
   border-color: black;
   border-radius: 2px;
 }
 
 /* Added background: transparent */
 *::-webkit-scrollbar-thumb {
-  background: transparent;
-  animation: scroll-gradient 5s ease infinite;
-  background-size: 100% 100%;
+  background: #36363e;
   border-radius: 2px;
-  /* box shadow. If we set it to an enormous value with zero blur, it will cover all space around the scrollbar handle */
-  box-shadow: 0px 0px 0px 100000vh #1f1f27;
-  animation: gradientAnimation 3s linear infinite;
 }
 
 /* Added background: transparent */
 *::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, crimson, #1f1f27);
-  border-radius: 0px; /* Mantendo a consistência com o design do thumb */
-  animation-name: gradientAnimation;
-  animation-duration: 3s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+  background: #1f1f27;
+  border-radius: 0px;
 }
 
 /* @layer base {
