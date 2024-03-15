@@ -8,7 +8,7 @@ const Shortcuts = dynamic(() => import("./Shortcuts"), { suspense: true });
 export default function Sidebar() {
   return (
     <div
-      className={`h-screen w-64 bg-secondaryBlack text-white 
+      className={`h-screen w-64 bg-transparent text-white 
       grid grid-rows-[auto_minmax(0,60%)_minmax(0,40%)_auto] transition-all duration-500 ease-in-out`}
     >
       {/* Área 1: Logo e Busca */}

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import styles from "./styles.module.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { createClient } from "@/utils/supabase/client";
 import { usePost } from "@/utils/contexts/PostContext";
@@ -10,7 +11,7 @@ import plusIcon from "../../../../assets/icons/plus.svg";
 import Story from "./Story";
 import StorySkeleton from "./StorySkeleton";
 import StoryTemplate from "./StoryTemplate";
-import guiStoryAnimation from "../../../../assets/lottiefiles/gui-story.lottie";
+import guiStoryAnimation from "../../../../assets/lottiefiles/ui-story.lottie";
 import { DotLottiePlayer } from "@dotlottie/react-player";
 import "@dotlottie/react-player/dist/index.css";
 
@@ -57,7 +58,7 @@ export default function Stories({ setSliderMethods }: any) {
     const userId = session.session?.user.id;
 
     if (!userId) {
-      console.error("Usuário não logado.");
+      console.error("Usuário não logado. 1");
       return;
     }
 
@@ -232,15 +233,22 @@ export default function Stories({ setSliderMethods }: any) {
           <div className="h-52 2xl:h-64 relative flex justify-center items-center bg-[#29292F] transition-all ease-out rounded-md z-50">
             {/* Lottie animation overlay */}
             <div
-              className="absolute top-0 left-0 right-0 bottom-0"
-              style={{ pointerEvents: "none", mixBlendMode: "plus-lighter" }}
+              className="absolute inset-0 flex items-center justify-center"
+              style={{
+                pointerEvents: "none",
+                mixBlendMode: "plus-lighter",
+                transform: "scaleX(1.1)",
+              }}
             >
               <DotLottiePlayer
                 src={guiStoryAnimation}
                 autoplay
                 loop
+                style={{ borderRadius: "8px" }}
               ></DotLottiePlayer>
             </div>
+            {/* Force crop to the lottieFile edges to round then */}
+            <div className="absolute -inset-0.5 border-[2.66px] border-[#1F1F27] rounded-md pointer-events-none"></div>
             <div
               className="flex flex-col items-center justify-center cursor-pointer"
               onClick={handleOpenFileSelector}
@@ -250,7 +258,7 @@ export default function Stories({ setSliderMethods }: any) {
                 alt="Criar novo story"
                 width={48}
                 height={48}
-                className="rounded-full bg-[crimson] p-2 hover:scale-125 transition-all ease-out duration-300"
+                className={`${styles.combinedEffect} rounded-full p-2 hover:scale-125 transition-all ease-out duration-300`}
               />
               <div className="text-white text-center text-xs rounded-md mt-2">
                 Create Story
@@ -280,12 +288,11 @@ export default function Stories({ setSliderMethods }: any) {
           : [...Array(3)].map((_, index) => (
               <motion.div
                 key={`template-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.01 }}
+                initial={{ opacity: 0, x: 100 }} // Mudança aqui: começa fora da tela à direita
+                animate={{ opacity: 1, x: 0 }} // Mudança aqui: movendo para a esquerda
+                transition={{ delay: index * 0.2 }} // Ajuste o atraso conforme necessário
                 className="p-2"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#1F1F27] z-40 mix-blend-color"></div>
                 <StoryTemplate />
               </motion.div>
             ))}

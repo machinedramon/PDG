@@ -1,0 +1,16 @@
+@keyframes neonGlowAnimation {
+  0%,
+  100% {
+    text-shadow: 0 0 5px #ff00ff, /* Rosa */ 0 0 10px #ff00ff, 0 0 20px #ff00ff,
+      0 0 40px #00ffff, /* Azul ciano */ 0 0 80px #00ffff, 0 0 120px #00ffff;
+  }
+  50% {
+    text-shadow: 0 0 5px #00ffff, /* Azul ciano */ 0 0 10px #00ffff,
+      0 0 20px #00ffff, 0 0 40px #ff00ff, /* Rosa */ 0 0 80px #ff00ff,
+      0 0 120px #ff00ff;
+  }
+}
+
+.neonEffect {
+  animation: neonGlowAnimation 8s ease-in-out infinite;
+}

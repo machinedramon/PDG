@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import styles from "./styles.module.css";
 
 import storiesIcon from "../../../../assets/icons/stories.svg";
 import gameplaysIcon from "../../../../assets/icons/gameplays.svg";
@@ -22,24 +23,42 @@ const Tabs: React.FC<TabsProps> = ({
   return (
     <>
       <div className="h-full w-full flex justify-end">
-        <button
-          className={`flex items-center justify-center w-36 h-full hover:scale-105 hover:bg-[#444349] transition-all duration-300 space-x-2 ${
-            activeTab === "stories" ? "border-b-2 border-[#ED143D]" : ""
+        <div
+          className={`group flex flex-col hover:mx-4 hover:bg-[#29292F] rounded-md h-full cursor-pointer hover:scale-105 transition-all ease-out duration-300 ${
+            activeTab === "stories" ? `hover:bg-[#29292F]` : ""
           }`}
           onClick={() => setActiveTab("stories")}
         >
-          <Image src={storiesIcon} alt="Stories" width={28} height={28} />
-          <span className="text-white font-medium">Stories</span>
-        </button>
-        <button
-          className={`flex items-center justify-center w-36  h-full hover:scale-105 hover:bg-[#444349] transition-all duration-300 space-x-2 ${
-            activeTab === "lives" ? "border-b-2 border-[#ED143D]" : ""
+          <div className="flex items-center justify-between h-[100%] px-4 space-x-2">
+            <Image src={storiesIcon} alt="Stories" width={28} height={28} />
+            <span className="text-white font-medium">Stories</span>
+          </div>
+          <div
+            className={`h-[4px] transition-all ease-out duration-300 rounded-lg ${
+              activeTab === "stories"
+                ? `${styles.combinedEffect} group-hover:mx-4`
+                : "bg-transparent"
+            }`}
+          ></div>
+        </div>
+        <div
+          className={`group flex hover:mx-2 flex-col rounded-md hover:bg-[#29292F] h-full cursor-pointer hover:scale-105 transition-all ease-out duration-300 ${
+            activeTab === "lives" ? `hover:bg-[#29292F]` : ""
           }`}
           onClick={() => setActiveTab("lives")}
         >
-          <Image src={gameplaysIcon} alt="Lives" width={28} height={28} />
-          <span className="text-white font-medium">Lives</span>
-        </button>
+          <div className="flex items-center justify-between h-[100%] px-4 space-x-2">
+            <Image src={gameplaysIcon} alt="Lives" width={28} height={28} />
+            <span className="text-white font-medium">Lives</span>
+          </div>
+          <div
+            className={`h-[4px] transition-all ease-out duration-300 rounded-lg ${
+              activeTab === "lives"
+                ? `${styles.combinedEffect} group-hover:mx-4`
+                : "bg-transparent"
+            }`}
+          ></div>
+        </div>
       </div>
       {/* Botões customizados de navegação */}
       <div className="w-full flex justify-center z-30 px-2 space-x-4">

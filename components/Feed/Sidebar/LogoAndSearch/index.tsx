@@ -1,14 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import logo from "../../../../assets/images/logo-crimson.svg";
+import logoAnimated from "../../../../assets/images/logo-animated.svg";
 import searchIcon from "../../../../assets/icons/search.svg";
 
 export default function LogoAndSearch() {
   return (
     <>
-      <span className="font-bold text-xl mr-4">
-        <Image alt="" src={logo} />
+      <span className={`font-bold text-xl mr-4 neonEffect`}>
+        <Image alt="" src={logoAnimated} />
       </span>
       <div className="flex items-center bg-white rounded-full px-2 py-1 space-x-2">
         <Image

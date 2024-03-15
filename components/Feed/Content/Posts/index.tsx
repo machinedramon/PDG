@@ -112,7 +112,7 @@ export default function Posts() {
     userId = session?.session?.user.id;
 
     if (!userId) {
-      console.error("Usuário não logado.");
+      console.error("Usuário não logado. 2");
       setLoading(false);
       return;
     }
