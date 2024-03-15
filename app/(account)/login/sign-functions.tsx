@@ -38,10 +38,10 @@ const signIn = async (formData: FormData) => {
     });
 
     if (error) {
-        return redirect("/login?message=Could not authenticate user");
+        return error;
     }
 
-    return redirect("/protected");
+    return redirect("/feed");
 };
 
 export { signIn, signUp }

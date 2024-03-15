@@ -4,7 +4,7 @@ import Link from "next/link";
 import { SubmitButton } from "./submit-button";
 
 import { signIn } from './sign-functions'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import logoPDG from '../../../assets/logo/PDG.svg'
 import Image from "next/image";
@@ -20,6 +20,10 @@ export default function Login({
   const toogleLoginOption = () => {
     setLoginOption(!loginOption);
   };
+
+  useEffect(() => {
+    signIn
+  }, [])
 
   return (
     <div className="mx-auto bg-zinc-900 min-h-screen flex justify-center items-center">
@@ -42,7 +46,7 @@ export default function Login({
               </label>
 
               <input
-                className="rounded-md px-4 py-2 bg-inherit border mb-6 placeholder:text-slate-50 text-slate-50 focus:bg-slate-800"
+                className={`rounded-md px-4 py-2 bg-inherit border mb-6 placeholder:text-slate-50 text-slate-50 focus:bg-slate-800 ${searchParams?.message && 'border-red-500'}`}
                 name="email"
                 type="email"
                 placeholder="Email*"
@@ -52,7 +56,7 @@ export default function Login({
                 Password
               </label>
               <input
-                className="rounded-md px-4 py-2 bg-inherit border mb-6 placeholder:text-slate-50 text-slate-50 focus:bg-slate-800"
+                className={`rounded-md px-4 py-2 bg-inherit border mb-6 placeholder:text-slate-50 text-slate-50 focus:bg-slate-800 ${searchParams?.message && 'border-red-500'}`}
                 type="password"
                 name="password"
                 placeholder="Senha*"
@@ -85,8 +89,8 @@ export default function Login({
                 Cadastre-se
               </Link>
               {searchParams?.message && (
-                <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
-                  {searchParams.message}
+                <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center text-red-500">
+                  Usuário ou senha inválidos
                 </p>
               )}
             </form>
