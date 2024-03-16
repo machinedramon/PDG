@@ -4,7 +4,7 @@ import guiStoryDefaultAnimation from "../../../../../assets/lottiefiles/gui-stor
 
 export default function StoryTemplate() {
   return (
-    <div className="h-52 2xl:h-64 relative rounded-md overflow-hidden bg-gradient-to-r from-[#00FFFF] to-[#132929] backdrop-filter backdrop-blur-lg opacity-10">
+    <div className=" h-52 2xl:h-64 relative rounded-md overflow-hidden bg-gradient-to-r from-[#00FFFF] to-[#132929] backdrop-filter backdrop-blur-lg opacity-10">
       {/* Container para a animação Lottie centralizada */}
       <div className="absolute inset-0 flex items-center justify-center mix-blend-plus-lighter">
         <DotLottiePlayer

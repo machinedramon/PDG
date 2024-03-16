@@ -1,19 +1,47 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useState } from "react";
 import ActionsBar from "./ActionsBar";
 import Tabs from "./Tabs";
 import Stories from "./Stories";
 import Posts from "./Posts";
 
+interface SliderMethods {
+  next: () => void;
+  prev: () => void;
+  updateNavigation?: (isFirst: boolean, isLast: boolean) => void;
+}
+
 const Content: React.FC = () => {
   const [activeTab, setActiveTab] = useState("stories");
-  const [sliderMethods, setSliderMethods] = useState({
+  const [sliderMethods, setSliderMethods] = useState<SliderMethods>({
     next: () => {},
     prev: () => {},
   });
+
+  useEffect(() => {
+    // Esta função atualiza o estado com base nos valores isFirst e isLast
+    const updateNavigation = (isFirst: any, isLast: any) => {
+      console.log("Updating navigation in Content", { isFirst, isLast });
+      setSliderNavigation({ isFirstSlide: isFirst, isLastSlide: isLast });
+    };
+
+    // Atualiza sliderMethods para incluir updateNavigation
+    setSliderMethods({ next: () => {}, prev: () => {}, updateNavigation });
+  }, []);
+
+  const [sliderNavigation, setSliderNavigation] = useState({
+    isFirstSlide: false,
+    isLastSlide: false,
+  });
+
+  console.log(
+    "Passing to Tabs:",
+    sliderNavigation.isFirstSlide,
+    sliderNavigation.isLastSlide
+  );
 
   return (
     <div className="h-full max-h-[86vh] w-full max-w-xl 2xl:max-w-2xl mx-auto overflow-y-scroll space-y-4 px-4">
@@ -24,11 +52,13 @@ const Content: React.FC = () => {
             setActiveTab={setActiveTab}
             nextSlide={sliderMethods.next}
             prevSlide={sliderMethods.prev}
+            isFirstSlide={sliderNavigation.isFirstSlide}
+            isLastSlide={sliderNavigation.isLastSlide}
           />
         </div>
         {activeTab === "stories" && (
           <div className="w-full">
-            <Stories setSliderMethods={setSliderMethods} />
+            <Stories />
           </div>
         )}
       </div>

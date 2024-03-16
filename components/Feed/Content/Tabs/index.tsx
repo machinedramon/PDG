@@ -4,14 +4,14 @@ import styles from "./styles.module.css";
 
 import storiesIcon from "../../../../assets/icons/stories.svg";
 import gameplaysIcon from "../../../../assets/icons/gameplays.svg";
-import arrowLeftIcon from "../../../../assets/icons/arrow-left.svg";
-import arrowRightIcon from "../../../../assets/icons/arrow-right.svg";
 
 interface TabsProps {
   setActiveTab: (tabName: string) => void;
   activeTab: string;
   nextSlide: any;
   prevSlide: any;
+  isFirstSlide: any;
+  isLastSlide: any;
 }
 
 const Tabs: React.FC<TabsProps> = ({
@@ -19,10 +19,13 @@ const Tabs: React.FC<TabsProps> = ({
   prevSlide,
   setActiveTab,
   activeTab,
+  isFirstSlide,
+  isLastSlide,
 }) => {
+  console.log("Tabs received:", { isFirstSlide, isLastSlide });
   return (
     <>
-      <div className="h-full w-full flex justify-end">
+      <div className="h-full w-full flex justify-center">
         <div
           className={`group flex flex-col hover:mx-4 hover:bg-[#29292F] rounded-md h-full cursor-pointer hover:scale-105 transition-all ease-out duration-300 ${
             activeTab === "stories" ? `hover:bg-[#29292F]` : ""
@@ -42,7 +45,7 @@ const Tabs: React.FC<TabsProps> = ({
           ></div>
         </div>
         <div
-          className={`group flex hover:mx-2 flex-col rounded-md hover:bg-[#29292F] h-full cursor-pointer hover:scale-105 transition-all ease-out duration-300 ${
+          className={`group flex hover:mx-4 flex-col rounded-md hover:bg-[#29292F] h-full cursor-pointer hover:scale-105 transition-all ease-out duration-300 ${
             activeTab === "lives" ? `hover:bg-[#29292F]` : ""
           }`}
           onClick={() => setActiveTab("lives")}
@@ -59,21 +62,6 @@ const Tabs: React.FC<TabsProps> = ({
             }`}
           ></div>
         </div>
-      </div>
-      {/* Botões customizados de navegação */}
-      <div className="w-full flex justify-center z-30 px-2 space-x-4">
-        <button
-          onClick={prevSlide}
-          className="bg-[#29292F] rounded-md p-2 hover:bg-[#444349] hover:scale-110 transition-all ease-out duration-300"
-        >
-          <Image src={arrowLeftIcon} alt="Prev" width={16} height={16} />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="bg-[#29292F] rounded-md p-2 hover:bg-[#444349] hover:scale-110 transition-all ease-out duration-300"
-        >
-          <Image src={arrowRightIcon} alt="Next" width={16} height={16} />
-        </button>
       </div>
     </>
   );

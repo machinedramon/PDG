@@ -17,7 +17,63 @@ import "@dotlottie/react-player/dist/index.css";
 
 const supabase = createClient();
 
-export default function Stories({ setSliderMethods }: any) {
+const PrevArrow = ({ onClick, currentSlide }: any) => {
+  const isFirstSlide = currentSlide == 0;
+  return (
+    <div
+      className={`absolute top-1/2 -left-2 z-50 h-10 w-10 flex items-center justify-center bg-[#36363E] rounded-md hover:scale-110 transition-all duration-300 ease-out text-white cursor-pointer transform -translate-y-1/2 ${
+        isFirstSlide ? "opacity-0 cursor-not-allowed" : ""
+      }`}
+      onClick={isFirstSlide ? null : onClick} // Desabilita o onClick se for o primeiro slide
+      style={{}}
+    >
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M15 19l-7-7 7-7"
+        ></path>
+      </svg>
+    </div>
+  );
+};
+
+const NextArrow = ({ onClick, currentSlide }: any) => {
+  const isLastSlide = Number.isInteger(currentSlide) ? false : true;
+  console.log(currentSlide);
+  return (
+    <div
+      className={`absolute top-1/2 -right-2 z-50 h-10 w-10 flex items-center justify-center bg-[#36363E] rounded-md hover:scale-110 transition-all duration-300 ease-out text-white cursor-pointer transform -translate-y-1/2 ${
+        isLastSlide ? "opacity-0 cursor-not-allowed" : ""
+      }`}
+      onClick={isLastSlide ? null : onClick}
+    >
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M9 5l7 7-7 7"
+        ></path>
+      </svg>
+    </div>
+  );
+};
+
+export default function Stories() {
   const [showModal, setShowModal] = useState(false);
   const [storyImage, setStoryImage] = useState<File | null>(null);
   const [storyText, setStoryText] = useState("");
@@ -25,16 +81,47 @@ export default function Stories({ setSliderMethods }: any) {
   const [stories, setStories] = useState<any[]>([]);
   const [isLoadingStories, setIsLoadingStories] = useState(true);
   const sliderRef = useRef<any>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-  useEffect(() => {
-    // Expondo as funções de controle do slider para o componente pai
-    if (sliderRef.current) {
-      setSliderMethods({
-        next: () => sliderRef.current.slickNext(),
-        prev: () => sliderRef.current.slickPrev(),
-      });
-    }
-  }, [setSliderMethods]);
+  const storiesCounter = stories.length === 0 ? 4 : stories.length;
+
+  const settings = {
+    arrows: true,
+    infinite: false,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    dots: false,
+    speed: 300,
+    slidesToShow: 3.7,
+    slidesToScroll: 1,
+    afterChange: (current: any) => {
+      setCurrentSlide(current);
+    },
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3.7,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2.7,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1.7,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
 
   const { refreshKey } = usePost();
 
@@ -116,41 +203,6 @@ export default function Stories({ setSliderMethods }: any) {
     fetchStories();
   }, [refreshKey]);
 
-  const slidesToShow = 3.7;
-
-  const settings = {
-    arrows: false,
-    infinite: false,
-    dots: false,
-    speed: 300,
-    slidesToShow,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3.6,
-          slidesToScroll: 3,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2.6,
-          slidesToScroll: 2,
-          initialSlide: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1.6,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
-
   const handleStorySubmit = async () => {
     if (!storyImage) {
       alert("Por favor, selecione uma imagem para o story.");
@@ -204,6 +256,8 @@ export default function Stories({ setSliderMethods }: any) {
     }
   };
 
+  const totalSlides = stories.length;
+
   return (
     <>
       {/* Renderize o Modal aqui, passando os props necessários */}
@@ -228,7 +282,16 @@ export default function Stories({ setSliderMethods }: any) {
         onChange={handleFileChange}
         className="hidden opacity-0 max-w-0 w-0"
       />
-      <Slider ref={sliderRef} {...settings}>
+      <Slider
+        ref={sliderRef}
+        {...settings}
+        nextArrow={
+          <NextArrow currentSlide={currentSlide} totalSlides={totalSlides} />
+        }
+        prevArrow={
+          <PrevArrow currentSlide={currentSlide} totalSlides={totalSlides} />
+        }
+      >
         <div className="p-2">
           <div className="h-52 2xl:h-64 relative flex justify-center items-center bg-[#29292F] transition-all ease-out rounded-md z-50">
             {/* Lottie animation overlay */}
@@ -285,7 +348,7 @@ export default function Stories({ setSliderMethods }: any) {
                 <Story story={story} />
               </motion.div>
             ))
-          : [...Array(3)].map((_, index) => (
+          : [...Array(8)].map((_, index) => (
               <motion.div
                 key={`template-${index}`}
                 initial={{ opacity: 0, x: 100 }} // Mudança aqui: começa fora da tela à direita
