@@ -6,7 +6,7 @@ import { createClient } from "@/utils/supabase/client";
 import { usePost } from "@/utils/contexts/PostContext";
 import Slider from "react-slick";
 import { Modal } from "./Modal";
-
+import { useToaster } from "react-hot-toast"; // Importando o React Hot Toast
 import plusIcon from "../../../../assets/icons/plus.svg";
 import Story from "./Story";
 import StorySkeleton from "./StorySkeleton";
@@ -14,6 +14,25 @@ import StoryTemplate from "./StoryTemplate";
 import guiStoryAnimation from "../../../../assets/lottiefiles/ui-story.lottie";
 import { DotLottiePlayer } from "@dotlottie/react-player";
 import "@dotlottie/react-player/dist/index.css";
+import toast from "react-hot-toast";
+
+// Função para emojis aleatórios
+const randomEmoji = () => {
+  const emojis = ["😄", "😎", "🚀", "💡", "🔥", "👍"];
+  return emojis[Math.floor(Math.random() * emojis.length)];
+};
+
+// Função para toast de sucesso com emoji aleatório
+const successToast = (message: any) =>
+  toast.success(`${randomEmoji()} ${message}`, {
+    duration: 4000,
+  });
+
+// Função para toast de erro com emoji aleatório
+const errorToast = (message: any) =>
+  toast.error(`${randomEmoji()} ${message}`, {
+    duration: 4000,
+  });
 
 interface UserProfile {
   id: string;
@@ -172,6 +191,8 @@ export default function Stories() {
     });
   }, []);
 
+  const toast = useToaster(); // Inicializando o React Hot Toast
+
   const handleOpenFileSelector = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -324,7 +345,7 @@ export default function Stories() {
 
   const handleStorySubmit = async () => {
     if (!storyImage) {
-      alert("Por favor, selecione uma imagem para o story.");
+      errorToast("Por favor, selecione uma imagem para o story.");
       return;
     }
 
@@ -368,13 +389,13 @@ export default function Stories() {
 
       if (storyError) throw new Error(storyError.message);
 
-      alert("Story criado com sucesso!");
+      successToast("Story criado com sucesso!");
       setShowModal(false);
       setStoryImage(null);
       setStoryText("");
       refreshPosts();
     } catch (error: any) {
-      alert(`Erro ao criar o story: ${error.message}`);
+      errorToast(`Erro ao criar o story: ${error.message}`);
     } finally {
       setIsLoadingStories(false);
     }

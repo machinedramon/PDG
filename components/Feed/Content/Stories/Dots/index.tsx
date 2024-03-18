@@ -1,43 +1,40 @@
 import React from "react";
-import styles from "./styles.module.css";
 
 type DotSliderProps = {
   count: number;
 };
 
 const Dots: React.FC<DotSliderProps> = ({ count }) => {
-  const maxWidth = 100; // Largura máxima em pixels
-  let dotSize = 20; // Tamanho inicial dos dots
-  const spaceBetween = 2; // Espaçamento mínimo entre dots
+  const maxWidth = 100; // A largura máxima é definida como 100% para ocupar todo o espaço disponível do container
+  const spaceBetween = 2; // Espaçamento entre as divisões em pixels
 
-  // Ajuste dinâmico do tamanho dos dots com base no count
-  // Isso é apenas um exemplo. Você pode querer ajustar a lógica para se adequar ao seu design
-  const totalSpacing = spaceBetween * (count - 1);
-  const totalSize = maxWidth - totalSpacing;
-  const maxDotSize = totalSize / count;
+  // Calcula a largura de cada divisão considerando o espaçamento entre elas
+  const divisionWidth =
+    count > 1
+      ? `calc(${maxWidth / count}% - ${spaceBetween}px)`
+      : `${maxWidth}%`;
 
-  if (maxDotSize < dotSize) {
-    dotSize = maxDotSize;
-  }
-
-  // Criar um array de elementos 'dot'
-  const dots = Array.from({ length: count }, (_, index) => (
+  // Cria um array de divisões. Cada divisão representa um "story" postado.
+  const divisions = Array.from({ length: count }, (_, index) => (
     <div
       key={index}
-      className={`${styles.dot} transition-all duration-300 ease-out`}
+      className="h-full bg-white" // Usando Tailwind para altura total e cor de fundo
       style={{
-        width: `${dotSize}px`,
-        height: `100%`,
-        margin: `0 ${spaceBetween / 2}px`,
+        width: divisionWidth,
+        marginRight: `${index < count - 1 ? spaceBetween : 0}px`, // Adiciona espaço entre as divisões, exceto após a última
       }}
     />
   ));
 
   return (
     <div
-      className={`${styles.dotSlider} h-4 transition-all duration-300 ease-out mx-8`}
+      className="absolute bottom-0 flex h-1 mx-8 overflow-hidden opacity-25" // Flex container com Tailwind para alinhamento e margem
+      style={{
+        backgroundColor: "green", // Cor de fundo do container
+        width: `${maxWidth}%`, // Ocupa a largura máxima disponível
+      }}
     >
-      {dots}
+      {divisions}
     </div>
   );
 };

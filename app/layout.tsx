@@ -2,6 +2,7 @@
 import { Rajdhani } from "next/font/google";
 import "./globals.css";
 import { PostProvider } from "@/utils/contexts/PostContext";
+import { Toaster } from "react-hot-toast";
 
 // If loading a variable font, you don't need to specify the font weight
 const rajdhani = Rajdhani({
@@ -29,7 +30,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={rajdhani.className}>
       <PostProvider>
-        <body className="bg-background text-foreground">{children}</body>
+        <body className="bg-background text-foreground">
+          <Toaster position="bottom-center" />
+          {children}
+        </body>
       </PostProvider>
     </html>
   );
