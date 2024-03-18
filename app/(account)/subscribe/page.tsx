@@ -236,7 +236,7 @@ export default function Login({
                         </Link>
 
                         {searchParams?.message && (
-                            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+                            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center text-red-500">
                                 {searchParams.message}
                             </p>
                         )}
