@@ -44,26 +44,26 @@ export default function Login({
                     <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
                         <div className="flex gap-2">
                             {/* NOME */}
-                            <label className="text-md hidden" htmlFor="nome">
+                            <label className="text-md hidden" htmlFor="name">
                                 Nome
                             </label>
                             <input
                                 className="rounded-md px-4 py-2 bg-inherit border mb-1 placeholder:text-slate-50 text-slate-50 focus:bg-slate-800"
-                                name="nome"
+                                name="name"
                                 placeholder="Nome*"
                                 type="text"
                                 required
                             />
                             {/* SOBRENOME */}
-                            <label className="text-md hidden" htmlFor="sobrenome">
+                            <label className="text-md hidden" htmlFor="lastName">
                                 Sobrenome
                             </label>
                             <input
                                 className="rounded-md px-4 py-2 bg-inherit border mb-1 placeholder:text-slate-50 text-slate-50 focus:bg-slate-800"
-                                name="sobrenome"
+                                name="lastName"
                                 placeholder="Sobrenome"
                                 type="text"
-                                required
+                            // required
                             />
                         </div>
 
@@ -76,7 +76,7 @@ export default function Login({
                             name="nickname"
                             type="text"
                             placeholder="Apelido/Nickname*"
-                            required
+                        // required
                         />
 
                         {/* EMAIL */}
@@ -124,7 +124,7 @@ export default function Login({
                                 type={showPassword ? 'text' : 'password'}
                                 name="confirmPassword"
                                 placeholder="Confirme a senha*"
-                                required
+                            // required
                             />
                             <button
                                 type="button"
@@ -147,7 +147,7 @@ export default function Login({
                             type="date"
                             name="data"
                             placeholder="Data"
-                            required
+                        // required
                         />
 
                         {/* GENERO */}
