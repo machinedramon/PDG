@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import mediaFallbackImage from "../../../../../assets/images/story/default.webp";
 import userHackerIcon from "../../../../../assets/icons/user-hacker.svg";
+import Dots from "../Dots";
 
 export default function Story({ story }: any) {
   return (
@@ -27,6 +28,7 @@ export default function Story({ story }: any) {
         <div className="text-white w-fit text-xs p-1 bg-black bg-opacity-50 rounded-md">
           {truncateText(story.user_profiles.nickname, 10)}
         </div>
+        <Dots count={2} />
       </div>
     </div>
   );

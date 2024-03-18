@@ -9,6 +9,7 @@ import picsIconSrc from "../../../../assets/icons/pics.svg";
 import feelingsIconSrc from "../../../../assets/emoji/glasses_emoji_entertainment.svg";
 import userAvatarSrc from "../../../../assets/icons/user-hacker.svg";
 import { Modal } from "./Modal";
+import { AnimatePresence } from "framer-motion";
 
 interface UserProfile {
   id: string;
@@ -58,13 +59,15 @@ const ActionsBar = () => {
 
   return (
     <>
-      {isModalOpen && (
-        <Modal
-          imageFile={imageFile}
-          onClose={handleCloseModal}
-          clearImageFile={() => setImageFile(null)}
-        />
-      )}
+      <AnimatePresence>
+        {isModalOpen && (
+          <Modal
+            imageFile={imageFile}
+            onClose={handleCloseModal}
+            clearImageFile={() => setImageFile(null)}
+          />
+        )}
+      </AnimatePresence>
       <div className="flex items-center space-x-4 w-full p-4 bg-[#1F1F27]">
         <Image
           src={userProfile?.avatar_url || userAvatarSrc}

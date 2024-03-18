@@ -14,6 +14,7 @@ import StoryTemplate from "./StoryTemplate";
 import guiStoryAnimation from "../../../../assets/lottiefiles/ui-story.lottie";
 import { DotLottiePlayer } from "@dotlottie/react-player";
 import "@dotlottie/react-player/dist/index.css";
+import Dots from "./Dots";
 
 const supabase = createClient();
 
@@ -82,6 +83,7 @@ export default function Stories() {
   const [isLoadingStories, setIsLoadingStories] = useState(true);
   const sliderRef = useRef<any>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [location, setLocation] = useState("");
 
   const storiesCounter = stories.length === 0 ? 4 : stories.length;
 
@@ -125,6 +127,12 @@ export default function Stories() {
 
   const { refreshKey } = usePost();
 
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setLocation(`${position.coords.latitude}, ${position.coords.longitude}`);
+    });
+  }, []);
+
   const handleOpenFileSelector = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -145,10 +153,55 @@ export default function Stories() {
     const userId = session.session?.user.id;
 
     if (!userId) {
-      console.error("Usuário não logado. 1");
+      console.error("Usuário não logado.");
+      setIsLoadingStories(false);
       return;
     }
 
+    // Buscar stories do próprio usuário
+    const userStories = await fetchUserStories(userId);
+    // Buscar stories dos amigos
+    const friendStories = await fetchFriendStories(userId);
+
+    // Combinar os stories do usuário com os dos amigos, colocando os do usuário primeiro
+    const combinedStories = [...userStories, ...friendStories];
+
+    setStories(combinedStories);
+    setIsLoadingStories(false);
+  };
+
+  const fetchUserStories = async (userId: any) => {
+    const { data, error } = await supabase
+      .from("stories")
+      .select(
+        `
+      story_id,
+      content,
+      media_urls,
+      privacy_level,
+      location,
+      created_at,
+      expires_at,
+      status,
+      like_count,
+      comment_count,
+      user_profiles: user_profiles!inner(id, avatar_url, nickname)
+    `
+      )
+      .eq("user_id", userId)
+      .gte("expires_at", new Date().toISOString())
+      .eq("status", "active")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Erro ao buscar stories do usuário:", error.message);
+      return [];
+    }
+
+    return data || [];
+  };
+
+  const fetchFriendStories = async (userId: any) => {
     const { data: friendIds, error: friendIdsError } = await supabase
       .from("connections")
       .select("user_id_1, user_id_2")
@@ -157,46 +210,42 @@ export default function Stories() {
 
     if (friendIdsError || !friendIds) {
       console.error("Erro ao buscar conexões:", friendIdsError?.message);
-      return;
+      return [];
     }
 
     const friendUserIds = new Set(
       friendIds.flatMap(({ user_id_1, user_id_2 }) => [user_id_1, user_id_2])
     );
-    friendUserIds.delete(userId); // Remove o próprio userId para buscar apenas stories de amigos
+    friendUserIds.delete(userId);
 
-    // Ajustando a consulta para incluir detalhes de user_profiles
-    const { data: stories, error: storiesError } = await supabase
+    const { data, error } = await supabase
       .from("stories")
       .select(
         `
-                story_id,
-                content,
-                media_urls,
-                privacy_level,
-                location,
-                created_at,
-                expires_at,
-                status,
-                like_count,
-                comment_count,
-                user_profiles: user_profiles!inner(id, avatar_url, nickname)
-            `
+      story_id,
+      content,
+      media_urls,
+      privacy_level,
+      location,
+      created_at,
+      expires_at,
+      status,
+      like_count,
+      comment_count,
+      user_profiles: user_profiles!inner(id, avatar_url, nickname)
+    `
       )
       .in("user_id", [...friendUserIds])
       .gte("expires_at", new Date().toISOString())
       .eq("status", "active")
       .order("created_at", { ascending: false });
 
-    if (storiesError) {
-      console.error("Erro ao buscar stories:", storiesError.message);
-      setIsLoadingStories(false);
-      return;
+    if (error || !data) {
+      console.error("Erro ao buscar stories dos amigos:", error?.message);
+      return [];
     }
 
-    // Atribuindo os dados de stories ao estado para renderização
-    setStories(stories);
-    setIsLoadingStories(false);
+    return data;
   };
 
   useEffect(() => {
@@ -209,54 +258,58 @@ export default function Stories() {
       return;
     }
 
-    setIsLoadingStories(true); // Opcional: Indicar carregamento
+    setIsLoadingStories(true); // Indica o início do upload
 
     try {
-      // Supondo que você já tenha o ID do usuário logado
       const { data: session } = await supabase.auth.getSession();
       const userId = session.session?.user.id;
 
-      // Definindo o caminho do arquivo no Storage
       const fileExtension = storyImage.name.split(".").pop();
       const fileName = `${new Date().getTime()}.${fileExtension}`;
       const filePath = `${userId}/stories/${fileName}`;
 
-      // Upload da imagem para o Storage
       const { error: uploadError } = await supabase.storage
-        .from("users") // Nome do bucket de stories
+        .from("users")
         .upload(filePath, storyImage);
 
       if (uploadError) throw new Error(uploadError.message);
 
-      // Obtenção da URL pública da imagem (ajuste conforme necessidade para URLs assinadas)
-      const { data } = supabase.storage.from("stories").getPublicUrl(filePath);
+      // Mudança significativa aqui para criar uma URL assinada em vez de pública
+      const expiresIn = 60 * 60 * 24; // 24 horas em segundos
+      const { data: signedUrlData, error: signedUrlError } =
+        await supabase.storage
+          .from("users")
+          .createSignedUrl(filePath, expiresIn);
 
-      // Criação do story no banco de dados
+      if (signedUrlError) throw new Error(signedUrlError.message);
+
+      const imageUrl = signedUrlData.signedUrl;
+
       const { error: storyError } = await supabase.from("stories").insert([
         {
           user_id: userId,
-          content: storyText, // Pode ser uma string vazia ou o texto inserido pelo usuário no modal
-          media_urls: [data.publicUrl],
-          privacy_level: "public", // Ajuste conforme o modelo do seu banco
-          status: "active", // Ajuste conforme o modelo do seu banco
-          // Adicione outros campos necessários aqui
+          content: storyText,
+          media_urls: [imageUrl],
+          location: location,
+          privacy_level: "public",
+          status: "active",
         },
       ]);
 
       if (storyError) throw new Error(storyError.message);
 
       alert("Story criado com sucesso!");
-      setShowModal(false); // Fecha o modal após a criação com sucesso
-      setStoryImage(null); // Limpa a imagem selecionada
-      setStoryText(""); // Limpa o texto do story
+      setShowModal(false);
+      setStoryImage(null);
+      setStoryText("");
     } catch (error: any) {
       alert(`Erro ao criar o story: ${error.message}`);
     } finally {
-      setIsLoadingStories(false); // Opcional: Indicar fim do carregamento
+      setIsLoadingStories(false);
     }
   };
 
-  const totalSlides = stories.length;
+  const totalSlides = storiesCounter;
 
   return (
     <>
@@ -321,7 +374,7 @@ export default function Stories() {
                 alt="Criar novo story"
                 width={48}
                 height={48}
-                className={`${styles.combinedEffect} rounded-full p-2 hover:scale-125 transition-all ease-out duration-300`}
+                className={`${styles.combinedEffect} rounded-full p-2 hover:scale-110 transition-all ease-out duration-300`}
               />
               <div className="text-white text-center text-xs rounded-md mt-2">
                 Create Story
@@ -339,16 +392,16 @@ export default function Stories() {
           : stories.length > 0
           ? stories.map((story, index) => (
               <motion.div
-                key={`story-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.01 }}
-                className="p-2 relative"
+                key={`template-${index}`}
+                initial={{ opacity: 0, x: 100 }} // Mudança aqui: começa fora da tela à direita
+                animate={{ opacity: 1, x: 0 }} // Mudança aqui: movendo para a esquerda
+                transition={{ delay: index * 0.2 }} // Ajuste o atraso conforme necessário
+                className="p-2"
               >
                 <Story story={story} />
               </motion.div>
             ))
-          : [...Array(8)].map((_, index) => (
+          : [...Array(4)].map((_, index) => (
               <motion.div
                 key={`template-${index}`}
                 initial={{ opacity: 0, x: 100 }} // Mudança aqui: começa fora da tela à direita

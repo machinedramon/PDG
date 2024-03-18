@@ -2,21 +2,15 @@ import dynamic from "next/dynamic";
 import Nav from "../../components/Feed/Nav";
 import Content from "@/components/Feed/Content";
 import styles from "./styles.module.css";
+import FirstTimeFeed from "@/components/Feed/loadings/FirstTimeFeed";
 
 const Sidebar = dynamic(() => import("../../components/Feed/Sidebar"));
 
-declare global {
-  interface Window {
-    _vawqicun: () => void;
-    _grepqmu: () => void;
-  }
-}
-
 export default function Feed() {
   return (
-    <div
-      className={`flex min-h-screen ${styles.combinedEffect} bg-[#181820]`}
-    >
+    <div className={`flex min-h-screen ${styles.combinedEffect} bg-[#181820]`}>
+      {/* Presentation Animation, only if first time on /feed */}
+      <FirstTimeFeed />
       {/* Sidebar */}
       <div className="bg-transparent w-64 h-screen fixed border-r border-[#29292F]">
         <Sidebar />
