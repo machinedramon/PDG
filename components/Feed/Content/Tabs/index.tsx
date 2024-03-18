@@ -22,7 +22,7 @@ const Tabs: React.FC<TabsProps> = ({
   isFirstSlide,
   isLastSlide,
 }) => {
-  console.log("Tabs received:", { isFirstSlide, isLastSlide });
+  // console.log("Tabs received:", { isFirstSlide, isLastSlide });
   return (
     <>
       <div className="h-full w-full flex justify-center">

@@ -25,7 +25,7 @@ const Content: React.FC = () => {
   useEffect(() => {
     // Esta função atualiza o estado com base nos valores isFirst e isLast
     const updateNavigation = (isFirst: any, isLast: any) => {
-      console.log("Updating navigation in Content", { isFirst, isLast });
+      // console.log("Updating navigation in Content", { isFirst, isLast });
       setSliderNavigation({ isFirstSlide: isFirst, isLastSlide: isLast });
     };
 
@@ -38,11 +38,11 @@ const Content: React.FC = () => {
     isLastSlide: false,
   });
 
-  console.log(
-    "Passing to Tabs:",
-    sliderNavigation.isFirstSlide,
-    sliderNavigation.isLastSlide
-  );
+  // console.log(
+  //   "Passing to Tabs:",
+  //   sliderNavigation.isFirstSlide,
+  //   sliderNavigation.isLastSlide
+  // );
 
   return (
     <div className="h-full max-h-[86vh] w-full max-w-xl 2xl:max-w-2xl mx-auto overflow-y-scroll space-y-4 px-4">

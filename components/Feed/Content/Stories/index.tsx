@@ -14,7 +14,42 @@ import StoryTemplate from "./StoryTemplate";
 import guiStoryAnimation from "../../../../assets/lottiefiles/ui-story.lottie";
 import { DotLottiePlayer } from "@dotlottie/react-player";
 import "@dotlottie/react-player/dist/index.css";
-import Dots from "./Dots";
+
+interface UserProfile {
+  id: string;
+  avatar_url: string;
+  nickname: string;
+}
+
+interface Story {
+  story_id: string;
+  content: string;
+  media_urls: string[];
+  privacy_level: string;
+  location: string | null;
+  created_at: string;
+  expires_at: string;
+  status: string;
+  like_count: number;
+  comment_count: number;
+  userProfiles: {
+    id: string;
+    avatar_url: string;
+    nickname: string;
+  };
+}
+
+interface StoriesGroup {
+  stories: Story[];
+  userProfiles: [
+    {
+      id: string;
+      avatar_url: string;
+      nickname: string;
+    }
+  ];
+  storyCount: number;
+}
 
 const supabase = createClient();
 
@@ -48,7 +83,6 @@ const PrevArrow = ({ onClick, currentSlide }: any) => {
 
 const NextArrow = ({ onClick, currentSlide }: any) => {
   const isLastSlide = Number.isInteger(currentSlide) ? false : true;
-  console.log(currentSlide);
   return (
     <div
       className={`absolute top-1/2 -right-2 z-50 h-10 w-10 flex items-center justify-center bg-[#36363E] rounded-md hover:scale-110 transition-all duration-300 ease-out text-white cursor-pointer transform -translate-y-1/2 ${
@@ -125,7 +159,12 @@ export default function Stories() {
     ],
   };
 
+  const { refreshPosts } = usePost();
   const { refreshKey } = usePost();
+
+  useEffect(() => {
+    fetchStories();
+  }, [refreshKey]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -165,8 +204,41 @@ export default function Stories() {
 
     // Combinar os stories do usuário com os dos amigos, colocando os do usuário primeiro
     const combinedStories = [...userStories, ...friendStories];
+    console.log("Combined Stories:", combinedStories);
 
-    setStories(combinedStories);
+    // Agrupa stories por usuário
+    // A função de reduce começa com um objeto vazio como valor inicial e acumula os resultados em acc.
+    const storiesGroupedByUser = combinedStories.reduce<
+      Record<string, StoriesGroup>
+    >((acc: any, story: any) => {
+      const userId = story.user_profiles.id;
+
+      console.log(userId);
+
+      if (!acc[userId]) {
+        acc[userId] = {
+          stories: [],
+          userProfiles: story.user_profiles,
+          storyCount: 0,
+        };
+      }
+
+      acc[userId].stories.push(story);
+      acc[userId].storyCount++;
+
+      return acc;
+    }, {});
+    console.log("Stories Grouped by User:", storiesGroupedByUser);
+
+    // Transforma o objeto agrupado em array
+    const storiesGroupedArray = Object.values(storiesGroupedByUser).map(
+      (group) => ({
+        ...group,
+        storyCount: group.stories.length,
+      })
+    );
+    console.log("Final Stories Array:", storiesGroupedArray);
+    setStories(storiesGroupedArray);
     setIsLoadingStories(false);
   };
 
@@ -198,6 +270,7 @@ export default function Stories() {
       return [];
     }
 
+    console.log("User Stories:", data);
     return data || [];
   };
 
@@ -245,12 +318,9 @@ export default function Stories() {
       return [];
     }
 
+    console.log("Friend Stories:", data);
     return data;
   };
-
-  useEffect(() => {
-    fetchStories();
-  }, [refreshKey]);
 
   const handleStorySubmit = async () => {
     if (!storyImage) {
@@ -302,6 +372,7 @@ export default function Stories() {
       setShowModal(false);
       setStoryImage(null);
       setStoryText("");
+      refreshPosts();
     } catch (error: any) {
       alert(`Erro ao criar o story: ${error.message}`);
     } finally {
@@ -390,15 +461,15 @@ export default function Stories() {
               </div>
             ))
           : stories.length > 0
-          ? stories.map((story, index) => (
+          ? stories.map((group: StoriesGroup, index: number) => (
               <motion.div
-                key={`template-${index}`}
+                key={`story-group-${index}`}
                 initial={{ opacity: 0, x: 100 }} // Mudança aqui: começa fora da tela à direita
                 animate={{ opacity: 1, x: 0 }} // Mudança aqui: movendo para a esquerda
                 transition={{ delay: index * 0.2 }} // Ajuste o atraso conforme necessário
                 className="p-2"
               >
-                <Story story={story} />
+                <Story story={group.stories[0]} storyCount={group.storyCount} />
               </motion.div>
             ))
           : [...Array(4)].map((_, index) => (

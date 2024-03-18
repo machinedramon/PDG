@@ -5,7 +5,7 @@ import mediaFallbackImage from "../../../../../assets/images/story/default.webp"
 import userHackerIcon from "../../../../../assets/icons/user-hacker.svg";
 import Dots from "../Dots";
 
-export default function Story({ story }: any) {
+export default function Story({ story, storyCount }: any) {
   return (
     <div className="h-52 2xl:h-64 w-full relative rounded-md overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#000000] z-10 pointer-events-none"></div>
@@ -28,7 +28,7 @@ export default function Story({ story }: any) {
         <div className="text-white w-fit text-xs p-1 bg-black bg-opacity-50 rounded-md">
           {truncateText(story.user_profiles.nickname, 10)}
         </div>
-        <Dots count={2} />
+        <Dots count={storyCount} />
       </div>
     </div>
   );
