@@ -15,6 +15,7 @@ import guiStoryAnimation from "../../../../assets/lottiefiles/ui-story.lottie";
 import { DotLottiePlayer } from "@dotlottie/react-player";
 import "@dotlottie/react-player/dist/index.css";
 import toast from "react-hot-toast";
+import FullscreenStories from "./FullscreenStories";
 
 // Função para emojis aleatórios
 const randomEmoji = () => {
@@ -24,13 +25,13 @@ const randomEmoji = () => {
 
 // Função para toast de sucesso com emoji aleatório
 const successToast = (message: any) =>
-  toast.success(`${randomEmoji()} ${message}`, {
+  toast.success(`${randomEmoji()} Feito! ${message}`, {
     duration: 4000,
   });
 
 // Função para toast de erro com emoji aleatório
 const errorToast = (message: any) =>
-  toast.error(`${randomEmoji()} ${message}`, {
+  toast.error(`${randomEmoji()} Ops! Algo deu errado. ${message}`, {
     duration: 4000,
   });
 
@@ -137,6 +138,8 @@ export default function Stories() {
   const sliderRef = useRef<any>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [location, setLocation] = useState("");
+  const [showFullscreen, setShowFullscreen] = useState(false);
+  const [initialStoryIndex, setInitialStoryIndex] = useState(0);
 
   const storiesCounter = stories.length === 0 ? 4 : stories.length;
 
@@ -176,6 +179,11 @@ export default function Stories() {
         },
       },
     ],
+  };
+
+  const handleStoryClick = (index: number) => {
+    setInitialStoryIndex(index);
+    setShowFullscreen(true);
   };
 
   const { refreshPosts } = usePost();
@@ -405,6 +413,15 @@ export default function Stories() {
 
   return (
     <>
+      {showFullscreen && (
+        <FullscreenStories
+          storiesData={stories} // Seu array de dados de stories formatado
+          initialStoryIndex={initialStoryIndex}
+          onClose={() => {
+            setShowFullscreen(false);
+          }}
+        />
+      )}
       {/* Renderize o Modal aqui, passando os props necessários */}
       <AnimatePresence>
         {showModal && (
@@ -489,6 +506,7 @@ export default function Stories() {
                 animate={{ opacity: 1, x: 0 }} // Mudança aqui: movendo para a esquerda
                 transition={{ delay: index * 0.2 }} // Ajuste o atraso conforme necessário
                 className="p-2"
+                onClick={() => handleStoryClick(index)}
               >
                 <Story story={group.stories[0]} storyCount={group.storyCount} />
               </motion.div>

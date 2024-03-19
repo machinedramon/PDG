@@ -68,7 +68,7 @@
   }
   50% {
     background-position: 100% 50%;
-    box-shadow: 0 4px 15px -3px rgba(255, 0, 255, 0.7),
+    box-shadow: 0 4px 15px -3px #ff00ffb3,
       0 4px 6px -4px rgba(255, 0, 255, 0.5);
   }
   100% {

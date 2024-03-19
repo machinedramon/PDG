@@ -31,7 +31,13 @@ export default function RootLayout({
     <html lang="en" className={rajdhani.className}>
       <PostProvider>
         <body className="bg-background text-foreground">
-          <Toaster position="bottom-center" />
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              className:
+                "rounded-lg bg-[#29292f] text-white border border-gray-700",
+            }}
+          />
           {children}
         </body>
       </PostProvider>
