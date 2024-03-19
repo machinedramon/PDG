@@ -23,25 +23,24 @@ const signUp = async (formData: FormData) => {
         password,
         options: {
             emailRedirectTo: `${origin}/auth/callback`,
-            data: {
-                first_name: first_name,
-                last_name: last_name,
-                nickname: nickname,
-                birthdate: birthday,
-                gender: genero,
-                pronoum: pronome,
-            }
+            // data: {
+            //     first_name: first_name,
+            //     last_name: last_name,
+            //     nickname: nickname,
+            //     birthdate: birthday,
+            //     gender: genero,
+            //     pronoum: pronome,
+            // }
         },
     });
-
-    console.log('data', data)
 
     if (error) {
         console.log(error)
         return redirect(`/subscribe?message=Could not create user`);
     }
 
-    return redirect(`/confirm-email?first_name=${first_name}&last_name=${last_name}&email=${email}`);
+    return redirect(`/confirm-email?&email=${email}`);
+    // return redirect(`/confirm-email?first_name=${first_name}&last_name=${last_name}&email=${email}`);
     // return redirect(`/confirm-email?message=Check email to continue sign in process`);
 };
 

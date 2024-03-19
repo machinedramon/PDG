@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { SubmitButton } from "./submit-button";
 
-import { signIn } from './sign-functions'
+import { signIn, signUp } from './sign-functions'
 import { useEffect, useState } from "react";
 
 import Image from "next/image";
@@ -14,7 +14,7 @@ import LogoAnimated from "@/assets/images/logo-animated-full.svg";
 export default function Login({
   searchParams,
 }: {
-  searchParams: { message: string };
+  searchParams: { message?: string, success?: string };
 }) {
 
   const [loginOption, setLoginOption] = useState<boolean>(true) //true = login; false =  forgot password
@@ -58,6 +58,11 @@ export default function Login({
                 placeholder="Senha*"
                 required
               />
+              {searchParams?.success && (
+                <p className="mt-4 mx-auto bg-foreground/10 text-foreground text-center text-green-600 w-60">
+                  {searchParams.success}
+                </p>
+              )}
               <SubmitButton
                 formAction={signIn}
                 className="bg-sky-400 rounded-md px-4 py-2 text-foreground mb-2 text-slate-50 hover:bg-sky-600 active:bg-sky-500 transition-all font-bold"
@@ -78,12 +83,19 @@ export default function Login({
                 Não possui conta?
               </p>
 
-              <Link
+              <SubmitButton
+                formAction={signUp}
+                className="rounded-md px-4 py-2 text-foreground mb-2 bg-violet-400 text-slate-50 hover:bg-violet-600 active:bg-violet-500 transition-all font-bold text-center"
+                pendingText="Enviando..."
+              >
+                Cadastre-se
+              </SubmitButton>
+              {/* <Link
                 href="/subscribe"
                 className="rounded-md px-4 py-2 text-foreground mb-2 bg-violet-400 text-slate-50 hover:bg-violet-600 active:bg-violet-500 transition-all font-bold text-center"
               >
                 Cadastre-se
-              </Link>
+              </Link> */}
               {searchParams?.message && (
                 <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center text-red-500">
                   Usuário ou senha inválidos

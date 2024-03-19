@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitButton } from "../login/submit-button";
 import { signUp } from "../login/sign-functions";
 
@@ -23,6 +23,11 @@ export default function Login({
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
+    const [senha, setSenha] = useState<string>('')
+    const [confirmarSenha, setConfirmarSenha] = useState<string>('')
+    const [senhaCoincide, setSenhaCoincide] = useState<boolean | null>(null)
+    const [confirmacaoInteragida, setConfirmacaoInteragida] = useState(false);
+
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedOption(event.target.value);
     };
@@ -34,6 +39,27 @@ export default function Login({
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword)
     };
+
+    // useEffect(() => {
+    //     let timeoutId: NodeJS.Timeout;
+
+    //     if (confirmacaoInteragida) {
+    //         timeoutId = setTimeout(() => {
+    //             if (senha === confirmarSenha) {
+    //                 setSenhaCoincide(true);
+    //             } else {
+    //                 setSenhaCoincide(false);
+    //             }
+    //         }, 1500);
+    //     }
+
+    //     return () => clearTimeout(timeoutId);
+    // }, [senha, confirmarSenha, confirmacaoInteragida]);
+
+    // const handleConfirmarSenhaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     setConfirmarSenha(e.target.value);
+    //     setConfirmacaoInteragida(true); // Marca que o usuário interagiu com a confirmação da senha
+    // };
 
     return (
         <div className="mx-auto bg-zinc-900 min-h-screen flex justify-center items-center">
@@ -102,6 +128,8 @@ export default function Login({
                                 type={showPassword ? 'text' : 'password'}
                                 name="password"
                                 placeholder="Nova senha*"
+                                onChange={e => setSenha(e.target.value)}
+                                value={senha}
                                 required
                             />
                             <button
@@ -125,6 +153,8 @@ export default function Login({
                                 type={showPassword ? 'text' : 'password'}
                                 name="confirmPassword"
                                 placeholder="Confirme a senha*"
+                                onChange={e => setConfirmarSenha(e.target.value)}
+                                value={confirmarSenha}
                             // required
                             />
                             <button
@@ -137,6 +167,7 @@ export default function Login({
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12a9 9 0 016.364 4.364l3.535 3.536-1.414 1.414-3.535-3.536A9 9 0 019 12z" />
                                 </svg>
                             </button>
+                            {confirmacaoInteragida && !senhaCoincide && <p style={{ color: 'red' }}>As senhas não coincidem.</p>}
                         </div>
 
                         {/* DATA DE NASCIMENTO */}
