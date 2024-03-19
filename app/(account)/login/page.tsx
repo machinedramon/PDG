@@ -6,8 +6,10 @@ import { SubmitButton } from "./submit-button";
 import { signIn } from './sign-functions'
 import { useEffect, useState } from "react";
 
-import logoPDG from '../../../assets/logo/PDG.svg'
 import Image from "next/image";
+
+import logoPDG from '../../../assets/images/logo.svg'
+import LogoAnimated from "@/assets/images/logo-animated-full.svg";
 
 export default function Login({
   searchParams,
@@ -27,18 +29,12 @@ export default function Login({
 
   return (
     <div className="mx-auto bg-zinc-900 min-h-screen flex justify-center items-center">
-      <div className="max-w-screen-lg flex flex-row px-4">
-        <div className="flex items-center">
-          <p className='text-4xl text-slate-100'>
-            Compartilhe seus momentos épicos.<br />
-            Sua jornada gamer, nossa comunidade.<br />
-            PDG, onde as histórias de jogos ganham vida!
-          </p>
-        </div>
-        <div className="bg-blue-950/[.30] p-4 w-fit rounded-lg flex-1">
-
-          <Image src={logoPDG} alt="PDG" className="h-40 w-auto mb-6" />
-
+      <div className="max-w-screen-lg flex flex-row px4">
+        {/* <div className="flex items-center">
+          <Image src={LogoAnimated} alt="PDG" className="h-40 w-auto mb-6" />
+        </div> */}
+        <div className="bg-blue-950/[.30] p-4 w-fit rounded-lg flex-1 justift-center flex flex-col">
+          <Image src={LogoAnimated} alt="PDG" className="h-40 w-auto mb-6" />
           {loginOption ?
             <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
               <label className="text-md hidden" htmlFor="email">

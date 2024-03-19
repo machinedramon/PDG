@@ -44,23 +44,23 @@ export default function Login({
                     <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
                         <div className="flex gap-2">
                             {/* NOME */}
-                            <label className="text-md hidden" htmlFor="name">
+                            <label className="text-md hidden" htmlFor="first_name">
                                 Nome
                             </label>
                             <input
                                 className="rounded-md px-4 py-2 bg-inherit border mb-1 placeholder:text-slate-50 text-slate-50 focus:bg-slate-800"
-                                name="name"
+                                name="first_name"
                                 placeholder="Nome*"
                                 type="text"
                                 required
                             />
                             {/* SOBRENOME */}
-                            <label className="text-md hidden" htmlFor="lastName">
+                            <label className="text-md hidden" htmlFor="last_name">
                                 Sobrenome
                             </label>
                             <input
                                 className="rounded-md px-4 py-2 bg-inherit border mb-1 placeholder:text-slate-50 text-slate-50 focus:bg-slate-800"
-                                name="lastName"
+                                name="last_name"
                                 placeholder="Sobrenome"
                                 type="text"
                             // required
