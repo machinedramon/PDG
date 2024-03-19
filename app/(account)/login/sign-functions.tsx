@@ -38,27 +38,10 @@ const signUp = async (formData: FormData) => {
 
     if (error) {
         console.log(error)
-        return redirect(`/subscribe?message=Could not authenticate user`);
+        return redirect(`/subscribe?message=Could not create user`);
     }
 
-    // Após a criação bem-sucedida do usuário, insira os detalhes adicionais na tabela user_profiles
-    if (data.user) {
-        await supabase
-            .from('user_profiles')
-            .insert([
-                {
-                    id: data.user.id,
-                    first_name: first_name,
-                    last_name: last_name,
-                    nickname: nickname,
-                    birthdate: birthday,
-                    gender: genero,
-                    pronoum: pronome,
-                }
-            ]);
-    }
-
-    return redirect(`/confirm-email?message=Check email to continue sign in process&first_name=${first_name}&last_name=${last_name}&nickname=${nickname}&email=${email}`);
+    return redirect(`/confirm-email?first_name=${first_name}&last_name=${last_name}&email=${email}`);
     // return redirect(`/confirm-email?message=Check email to continue sign in process`);
 };
 

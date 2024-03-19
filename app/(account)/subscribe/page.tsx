@@ -6,8 +6,9 @@ import { useState } from "react";
 import { SubmitButton } from "../login/submit-button";
 import { signUp } from "../login/sign-functions";
 
-import logoPDG from '../../../assets/logo/PDG.svg'
 import Image from "next/image";
+
+import LogoAnimated from "@/assets/images/logo-animated-full.svg";
 
 
 export default function Login({
@@ -39,7 +40,7 @@ export default function Login({
             <div className="max-w-screen-lg flex flex-row px-4">
                 <div className="bg-blue-950/[.30] p-4 w-fit rounded-lg flex-1 flex justify-center flex-col">
 
-                    <Image src={logoPDG} alt="PDG" className="h-40 w-auto mb-6" />
+                    <Image src={LogoAnimated} alt="PDG" className="h-40 w-auto mb-6" />
 
                     <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
                         <div className="flex gap-2">
