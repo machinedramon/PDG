@@ -353,12 +353,9 @@ export default function Stories() {
       errorToast("Aguarde o fim do upload ou selecione uma imagem.");
       return;
     }
-
-    setIsSubmitting(true);
     const toastId = showToastLoading("Enviando seu story...");
 
-    setIsLoadingStories(true); // Indica o início do upload
-
+    setIsLoadingStories(true);
     try {
       const { data: session } = await supabase.auth.getSession();
       const userId = session.session?.user.id;

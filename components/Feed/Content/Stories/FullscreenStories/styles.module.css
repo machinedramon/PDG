@@ -35,13 +35,31 @@
 }
 
 .arrow {
-  position: absolute;
+  visibility: hidden;
+  position: fixed; /* Alterado de absolute para fixed */
   top: 50%;
   width: 48px;
   height: 48px;
   cursor: pointer;
+  /* A transformação abaixo centraliza a seta verticalmente */
   transform: translateY(-50%);
   z-index: 1010;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.5
+  ); /* Ajuste a cor conforme necessário */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease; /* Adiciona transição suave para o efeito de hover */
+}
+
+.arrowLeft:hover,
+.arrowRight:hover {
+  /* Combina translateY para manter a seta centrada com scale para o efeito de zoom */
+  transform: translateY(-50%) scale(1.05);
 }
 
 .arrowLeft {
@@ -50,22 +68,4 @@
 
 .arrowRight {
   right: 20px;
-}
-
-.navigation {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 20px;
-}
-
-.navigation button {
-  background-color: #ffffff;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 16px;
 }

@@ -109,16 +109,25 @@ export default function FullscreenStories({
             <Stories
               stories={formattedStories[currentUserIndex]}
               defaultInterval={6000}
-              width="100vw"
+              width="100%"
               height="100vh"
               onAllStoriesEnd={onClose}
-              storyStyles={{
+              storyContainerStyles={{
                 width: "100%",
-                height: "100%",
+              }}
+              storyInnerContainerStyles={{
+                width: "100%",
+                heigth: "100%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                objectFit: "contain",
+                objectFit: "cover",
+              }}
+              storyStyles={{
+                width: "100%", // Ajustado para 100% para preencher o componente pai
+                height: "100%", // Ajustado para 100% para preencher o componente pai
+                maxWidth: "100vw", // Limita a largura máxima
+                maxHeight: "100vh", // Limita a altura máxima
               }}
             />
           )}
