@@ -11,6 +11,19 @@
   background-color: rgba(0, 0, 0, 0.85);
 }
 
+.fullscreenOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  z-index: 999; /* Certifique-se de que esta camada esteja acima de tudo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .closeButton {
   position: absolute;
   top: 20px;

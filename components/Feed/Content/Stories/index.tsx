@@ -35,6 +35,14 @@ const errorToast = (message: any) =>
     duration: 4000,
   });
 
+const showToastLoading = (message: string) => toast.loading(message);
+
+// Função para atualizar o toast baseado no resultado da operação
+const updateToast = (toastId: string, success: boolean, message: string) => {
+  toast.dismiss(toastId); // Remove o toast de carregando
+  success ? toast.success(message) : toast.error(message);
+};
+
 interface UserProfile {
   id: string;
   avatar_url: string;
@@ -52,22 +60,12 @@ interface Story {
   status: string;
   like_count: number;
   comment_count: number;
-  userProfiles: {
-    id: string;
-    avatar_url: string;
-    nickname: string;
-  };
+  userProfiles: UserProfile;
 }
 
 interface StoriesGroup {
   stories: Story[];
-  userProfiles: [
-    {
-      id: string;
-      avatar_url: string;
-      nickname: string;
-    }
-  ];
+  userProfiles: UserProfile;
   storyCount: number;
 }
 
@@ -139,7 +137,8 @@ export default function Stories() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [location, setLocation] = useState("");
   const [showFullscreen, setShowFullscreen] = useState(false);
-  const [initialStoryIndex, setInitialStoryIndex] = useState(0);
+  const [initialUserId, setInitialUserId] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const storiesCounter = stories.length === 0 ? 4 : stories.length;
 
@@ -181,8 +180,8 @@ export default function Stories() {
     ],
   };
 
-  const handleStoryClick = (index: number) => {
-    setInitialStoryIndex(index);
+  const handleStoryClick = (userId: any) => {
+    setInitialUserId(userId);
     setShowFullscreen(true);
   };
 
@@ -198,8 +197,6 @@ export default function Stories() {
       setLocation(`${position.coords.latitude}, ${position.coords.longitude}`);
     });
   }, []);
-
-  const toast = useToaster(); // Inicializando o React Hot Toast
 
   const handleOpenFileSelector = () => {
     if (fileInputRef.current) {
@@ -353,9 +350,12 @@ export default function Stories() {
 
   const handleStorySubmit = async () => {
     if (!storyImage) {
-      errorToast("Por favor, selecione uma imagem para o story.");
+      errorToast("Aguarde o fim do upload ou selecione uma imagem.");
       return;
     }
+
+    setIsSubmitting(true);
+    const toastId = showToastLoading("Enviando seu story...");
 
     setIsLoadingStories(true); // Indica o início do upload
 
@@ -384,6 +384,10 @@ export default function Stories() {
 
       const imageUrl = signedUrlData.signedUrl;
 
+      const expiresAt = new Date(
+        new Date().getTime() + expiresIn * 1000
+      ).toISOString();
+
       const { error: storyError } = await supabase.from("stories").insert([
         {
           user_id: userId,
@@ -392,18 +396,23 @@ export default function Stories() {
           location: location,
           privacy_level: "public",
           status: "active",
+          expires_at: expiresAt,
         },
       ]);
 
       if (storyError) throw new Error(storyError.message);
 
-      successToast("Story criado com sucesso!");
+      updateToast(toastId, true, "Story publicado com sucesso!");
       setShowModal(false);
       setStoryImage(null);
       setStoryText("");
       refreshPosts();
     } catch (error: any) {
-      errorToast(`Erro ao criar o story: ${error.message}`);
+      updateToast(
+        toastId,
+        false,
+        `Falha ao publicar o story: ${error.message}`
+      );
     } finally {
       setIsLoadingStories(false);
     }
@@ -413,26 +422,37 @@ export default function Stories() {
 
   return (
     <>
-      {showFullscreen && (
-        <FullscreenStories
-          storiesData={stories} // Seu array de dados de stories formatado
-          initialStoryIndex={initialStoryIndex}
-          onClose={() => {
-            setShowFullscreen(false);
+      <AnimatePresence>
+        <motion.div
+          className={styles.fullscreenStories}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{
+            x: { type: "spring", stiffness: 300, damping: 30 },
+            opacity: { duration: 0.2 },
           }}
-        />
-      )}
-      {/* Renderize o Modal aqui, passando os props necessários */}
+        >
+          {showFullscreen && (
+            <FullscreenStories
+              storiesData={stories}
+              initialUserId={initialUserId}
+              onClose={() => {
+                setShowFullscreen(false);
+              }}
+            />
+          )}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Renderiza o Modal aqui, passando os props necessários */}
       <AnimatePresence>
         {showModal && (
           <Modal
             image={storyImage}
             text={storyText}
             setText={setStoryText}
-            onClose={() => {
-              setTimeout(() => setShowModal(false), 0);
-            }}
-            onSubmit={handleStorySubmit}
+            onClose={() => setShowModal(false)}
+            onSubmit={handleStorySubmit} // Esta função já deve lidar com o feedback e carregamento
+            isSubmitting={isSubmitting} // Adicione este estado ao Modal para controlar o botão
           />
         )}
       </AnimatePresence>
@@ -506,7 +526,7 @@ export default function Stories() {
                 animate={{ opacity: 1, x: 0 }} // Mudança aqui: movendo para a esquerda
                 transition={{ delay: index * 0.2 }} // Ajuste o atraso conforme necessário
                 className="p-2"
-                onClick={() => handleStoryClick(index)}
+                onClick={() => handleStoryClick(group.userProfiles.id)}
               >
                 <Story story={group.stories[0]} storyCount={group.storyCount} />
               </motion.div>

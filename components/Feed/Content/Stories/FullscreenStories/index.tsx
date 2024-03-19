@@ -6,9 +6,26 @@ import styles from "./styles.module.css";
 import closeButtonImg from "../../../../../assets/icons/logout.svg";
 import arrowLeftImg from "../../../../../assets/icons/arrow-left.svg";
 import arrowRightImg from "../../../../../assets/icons/arrow-right.svg";
+import userDefault from "@/assets/icons/user-hacker.svg";
 
-export default function FullscreenStories({ storiesData, onClose }: any) {
-  const [currentUserIndex, setCurrentUserIndex] = useState(0);
+export default function FullscreenStories({
+  storiesData,
+  initialUserId,
+  onClose,
+}: any) {
+  const initialIndex = storiesData.findIndex(
+    (group: any) => group.userProfiles.id === initialUserId
+  );
+
+  const [currentUserIndex, setCurrentUserIndex] = useState(initialIndex);
+  const [animationDirection, setAnimationDirection] = useState(0); // 0 para neutro, -1 para esquerda, 1 para direita
+
+  useEffect(() => {
+    const newIndex = storiesData.findIndex(
+      (group: any) => group.userProfiles.id === initialUserId
+    );
+    setCurrentUserIndex(newIndex);
+  }, [initialUserId, storiesData]);
 
   useEffect(() => {
     const handleKeydown = (e: any) => {
@@ -26,17 +43,30 @@ export default function FullscreenStories({ storiesData, onClose }: any) {
 
   const handleNextUserStories = () => {
     if (currentUserIndex < storiesData.length - 1) {
+      setAnimationDirection(1);
       setCurrentUserIndex(currentUserIndex + 1);
     } else {
-      onClose(); // Fecha o componente se estiver no último usuário
+      onClose();
     }
   };
 
   const handlePrevUserStories = () => {
     if (currentUserIndex > 0) {
+      setAnimationDirection(-1);
       setCurrentUserIndex(currentUserIndex - 1);
     }
   };
+
+  const handleDragEnd = (event: any, info: any) => {
+    const threshold = 100;
+    if (info.offset.x > threshold) {
+      handlePrevUserStories();
+    } else if (info.offset.x < -threshold) {
+      handleNextUserStories();
+    }
+  };
+
+  console.log("userDefault", userDefault.src);
 
   // Preparando os stories para o componente Stories
   const formattedStories = storiesData.map((group: any) =>
@@ -45,8 +75,7 @@ export default function FullscreenStories({ storiesData, onClose }: any) {
       header: {
         heading: group.userProfiles.nickname,
         subheading: new Date(story.created_at).toLocaleDateString(),
-        profileImage:
-          group.userProfiles.avatar_url || "/path/to/default/avatar.jpg",
+        profileImage: group.userProfiles.avatar_url || userDefault.src,
       },
       type: story.media_urls[0].endsWith(".mp4") ? "video" : "image",
     }))
@@ -55,60 +84,75 @@ export default function FullscreenStories({ storiesData, onClose }: any) {
   return (
     <AnimatePresence>
       <motion.div
-        className={styles.fullscreenStories}
+        className={styles.fullscreenOverlay}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        key={currentUserIndex} // Ajuda na transição suave entre os usuários
+        transition={{ duration: 0.5 }}
       >
-        {formattedStories[currentUserIndex] && (
-          <Stories
-            stories={formattedStories[currentUserIndex]}
-            defaultInterval={1500}
-            width="100vw"
-            height="100vh"
-            onAllStoriesEnd={onClose}
-            storyStyles={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              objectFit: "contain",
-            }}
-          />
-        )}
-
         <motion.div
-          className={styles.closeButton}
-          onClick={onClose}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          className={styles.fullscreenStories}
+          key={currentUserIndex}
+          initial={{ x: animationDirection * 200, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -animationDirection * 200, opacity: 0 }}
+          transition={{
+            x: { type: "spring", stiffness: 300, damping: 30 },
+            opacity: { duration: 0.2 },
+          }}
+          onAnimationComplete={() => setAnimationDirection(0)}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          onDragEnd={handleDragEnd}
         >
-          <Image src={closeButtonImg} alt="Close" layout="fill" />
+          {formattedStories[currentUserIndex] && (
+            <Stories
+              stories={formattedStories[currentUserIndex]}
+              defaultInterval={6000}
+              width="100vw"
+              height="100vh"
+              onAllStoriesEnd={onClose}
+              storyStyles={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                objectFit: "contain",
+              }}
+            />
+          )}
+
+          <motion.div
+            className={styles.closeButton}
+            onClick={onClose}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Image src={closeButtonImg} alt="Close" layout="fill" />
+          </motion.div>
+
+          {currentUserIndex > 0 && (
+            <motion.div
+              className={`${styles.arrow} ${styles.arrowLeft}`}
+              onClick={handlePrevUserStories}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <Image src={arrowLeftImg} alt="Previous user" layout="fill" />
+            </motion.div>
+          )}
+          {currentUserIndex < storiesData.length - 1 && (
+            <motion.div
+              className={`${styles.arrow} ${styles.arrowRight}`}
+              onClick={handleNextUserStories}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <Image src={arrowRightImg} alt="Next user" layout="fill" />
+            </motion.div>
+          )}
         </motion.div>
-
-        {currentUserIndex > 0 && (
-          <motion.div
-            className={`${styles.arrow} ${styles.arrowLeft}`}
-            onClick={handlePrevUserStories}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Image src={arrowLeftImg} alt="Previous user" layout="fill" />
-          </motion.div>
-        )}
-
-        {currentUserIndex < storiesData.length - 1 && (
-          <motion.div
-            className={`${styles.arrow} ${styles.arrowRight}`}
-            onClick={handleNextUserStories}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Image src={arrowRightImg} alt="Next user" layout="fill" />
-          </motion.div>
-        )}
       </motion.div>
     </AnimatePresence>
   );

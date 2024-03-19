@@ -1,6 +1,13 @@
 import { motion } from "framer-motion";
 
-export const Modal = ({ image, text, setText, onClose, onSubmit }: any) => {
+export const Modal = ({
+  image,
+  text,
+  setText,
+  onClose,
+  onSubmit,
+  isSubmitting,
+}: any) => {
   const backdropVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.4 } },
@@ -47,9 +54,12 @@ export const Modal = ({ image, text, setText, onClose, onSubmit }: any) => {
           <div className="flex justify-end gap-3">
             <button
               onClick={onSubmit}
-              className="p-2.5 rounded-lg cursor-pointer bg-[#ED143D] text-white font-semibold hover:bg-[#f2163d]"
+              className={`p-2.5 rounded-lg cursor-pointer bg-[#ED143D] text-white font-semibold hover:bg-[#f2163d] ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isSubmitting}
             >
-              Submit Story
+              {isSubmitting ? "Submitting..." : "Submit Story"}
             </button>
             <button
               onClick={onClose}
