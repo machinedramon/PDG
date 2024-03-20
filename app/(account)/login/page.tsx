@@ -1,6 +1,5 @@
 'use client'
 
-import Link from "next/link";
 import { SubmitButton } from "./submit-button";
 
 import { signIn, signUp } from './sign-functions'
@@ -8,8 +7,8 @@ import { useEffect, useState } from "react";
 
 import Image from "next/image";
 
-import logoPDG from '../../../assets/images/logo.svg'
 import LogoAnimated from "@/assets/images/logo-animated-full.svg";
+import BgLogin from '@/assets/images/login_bg.png';
 
 export default function Login({
   searchParams,
@@ -28,82 +27,83 @@ export default function Login({
   }, [])
 
   return (
-    <div className="mx-auto bg-zinc-900 min-h-screen flex justify-center items-center">
-      <div className="max-w-screen-lg flex flex-row px4">
-        {/* <div className="flex items-center">
-          <Image src={LogoAnimated} alt="PDG" className="h-40 w-auto mb-6" />
-        </div> */}
-        <div className="bg-blue-950/[.30] p-4 w-fit rounded-lg flex-1 justift-center flex flex-col">
-          <Image src={LogoAnimated} alt="PDG" className="h-40 w-auto mb-6" />
+    <div className="mx-auto  min-h-screen flex justify-center items-center bg-login-bg bg-cover bg-no-repeat">
+      <div className="bg-pdgBlack-900 m-4 p-4 max-w-[949px] w-[100%] rounded-lg gap-8 justify-center flex flex-row">
+        <Image src={LogoAnimated} alt="PDG" className="h-auto w-cover flex flex-1" />
+        <div className='flex flex-1 p-8 gap-8 flex-col'>
+          <div className='gap-4 flex flex-col'>
+            <h1 className='font-bold text-4xl text-pdgWhite-50 w-max'>Pronto para começar?</h1>
+            <p className='font-normal text-base text-pdgWhite-50 text-center'>Entre ou cadastre-se para começar a explorar!</p>
+          </div>
           {loginOption ?
-            <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
-              <label className="text-md hidden" htmlFor="email">
-                Email
-              </label>
+            <form className="animate-in flex-1 flex flex-col w-full justify-center gap-4 text-foreground">
+              <div className="flex flex-col gap-2">
+                <label className="text-normal text-base text-pdgWhite-50" htmlFor="email">
+                  Email<span className='text-red-600'> *</span>
+                </label>
 
-              <input
-                className={`rounded-md px-4 py-2 bg-inherit border mb-6 placeholder:text-slate-50 text-slate-50 focus:bg-slate-800 ${searchParams?.message && 'border-red-500'}`}
-                name="email"
-                type="email"
-                placeholder="Email*"
-                required
-              />
-              <label className="text-md hidden" htmlFor="password">
-                Password
-              </label>
-              <input
-                className={`rounded-md px-4 py-2 bg-inherit border mb-6 placeholder:text-slate-50 text-slate-50 focus:bg-slate-800 ${searchParams?.message && 'border-red-500'}`}
-                type="password"
-                name="password"
-                placeholder="Senha*"
-                required
-              />
-              {searchParams?.success && (
-                <p className="mt-4 mx-auto bg-foreground/10 text-foreground text-center text-green-600 w-60">
-                  {searchParams.success}
-                </p>
-              )}
-              <SubmitButton
-                formAction={signIn}
-                className="bg-sky-400 rounded-md px-4 py-2 text-foreground mb-2 text-slate-50 hover:bg-sky-600 active:bg-sky-500 transition-all font-bold"
-                pendingText="Entrando..."
-              >
-                Entrar
-              </SubmitButton>
+                <input
+                  className={`bg-pdgBlack-500 border-pdgBlack-500 rounded-lg p-4 gap-[10px] bg-inherit border text-pdgWhite-50 focus:bg-slate-800 ${searchParams?.message && 'border-red-500'}`}
+                  name="email"
+                  type="email"
+                  required
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-normal text-base text-pdgWhite-50" htmlFor="password">
+                  Senha<span className='text-red-600'> *</span>
+                </label>
+
+                <input
+                  className={`bg-pdgBlack-500 border-pdgBlack-500 rounded-lg p-4 gap-[10px] bg-inherit border text-pdgWhite-50 focus:bg-slate-800 ${searchParams?.message && 'border-red-500'}`}
+                  name="password"
+                  type="password"
+                  required
+                />
+              </div>
               <button
                 onClick={toogleLoginOption} type="button"
-                className="text-slate-50 hover:underline box-content mx-auto"
+                className="text-pdgBlue-500 hover:underline box-content text-left text-xs font-medium"
               >
                 Esqueci minha senha
               </button>
 
-              <hr className="bg-slate-50" />
+              <div className='flex gap-4 items-center'>
 
-              <p className='font-bold text-[1rem] text-gray-50 text-center'>
-                Não possui conta?
-              </p>
+                <SubmitButton
+                  formAction={signIn}
+                  className=" rounded-lg border border-pdgBlack-500 py-[18px] px-4 gap-[10px]
+                  text-base font-bold text-pdgWhite-50 flex flex-1 justify-center hover:scale-105
+                  bg-gradient-to-r from-[#FF00FF] to-[#00FFFF]
+                  active:border active:border-pdgWhite-50
+                  transition duration-300 ease-in-out"
+                  pendingText="Entrando..."
+                >
+                  Entrar
+                </SubmitButton>
 
-              <SubmitButton
-                formAction={signUp}
-                className="rounded-md px-4 py-2 text-foreground mb-2 bg-violet-400 text-slate-50 hover:bg-violet-600 active:bg-violet-500 transition-all font-bold text-center"
-                pendingText="Enviando..."
-              >
-                Cadastre-se
-              </SubmitButton>
-              {/* <Link
-                href="/subscribe"
-                className="rounded-md px-4 py-2 text-foreground mb-2 bg-violet-400 text-slate-50 hover:bg-violet-600 active:bg-violet-500 transition-all font-bold text-center"
-              >
-                Cadastre-se
-              </Link> */}
-              {searchParams?.message && (
-                <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center text-red-500">
-                  Usuário ou senha inválidos
-                </p>
-              )}
+                <p className='text-base font-bold text-[#fff]'>ou</p>
+
+                <SubmitButton
+                  formAction={signUp}
+                  className="bg-pdgBlack-500 rounded-lg border border-pdgBlack-500 py-[18px] px-4 gap-[10px]
+                  text-base font-bold text-pdgWhite-50  flex flex-1 justify-center hover:scale-105
+                  bg-gradient-to-r from-[#FF00FF] to-[#00FFFF]
+                  active:border active:border-pdgWhite-50
+                  transition duration-300 ease-in-out"
+                  pendingText="Registrando..."
+                >
+                  Registrar
+                </SubmitButton>
+                {searchParams?.message && (
+                  <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center text-red-500">
+                    Usuário ou senha inválidos
+                  </p>
+                )}
+              </div>
             </form>
             :
-            <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
+            <form className="animate-in flex-1 flex flex-col w-full justify-center gap-4 text-foreground">
               <label className="text-md text-slate-50 text-xl" htmlFor="email">
                 Recupere sua conta
               </label>
