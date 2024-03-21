@@ -11,7 +11,6 @@ import { useState } from "react";
 import Image from "next/image";
 
 import LogoAnimated from "@/assets/images/logo-animated-full.svg";
-import { DotLottiePlayer } from "@dotlottie/react-player";
 import animationRecovery from "@/assets/images/recovery.gif";
 
 export default function Login({
@@ -182,6 +181,7 @@ export default function Login({
                 </div>
                 <div className="flex gap-4 items-center">
                   <button
+                    type="button"
                     onClick={toogleLoginOption}
                     className=" rounded-lg border-lg border-pdgBlack-500 py-[18px] px-4 gap-[10px]
                   text-base font-bold text-pdgWhite-50  flex flex-1 justify-center hover:scale-105
