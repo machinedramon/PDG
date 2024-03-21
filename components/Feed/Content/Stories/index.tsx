@@ -635,7 +635,7 @@ export default function Stories() {
         onChange={handleFileChange}
         className="hidden opacity-0 max-w-0 w-0"
       />
-      <div className="overflow-hidden max-h-56">
+      <div className="overflow-hidden max-h-56 lg:max-h-72">
         <AnimatePresence>
           <Slider
             ref={sliderRef}

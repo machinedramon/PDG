@@ -23,7 +23,7 @@ export default function Story({ story, storyCount, isUpdated }: any) {
         key={story.story_id} // Usar story_id como chave para rastrear mudanças
         layout
         transition={{ type: "spring", stiffness: 260, damping: 20 }}
-        className="h-52 2xl:h-64 max-h-64 w-full relative rounded-md overflow-hidden"
+        className="h-52 2xl:h-64 w-full relative rounded-md overflow-hidden"
       >
         {isUpdated && (
           <div className="absolute inset-0 z-20">
