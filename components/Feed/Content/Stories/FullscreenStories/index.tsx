@@ -7,6 +7,7 @@ import closeButtonImg from "../../../../../assets/icons/logout.svg";
 import arrowLeftImg from "../../../../../assets/icons/arrow-left.svg";
 import arrowRightImg from "../../../../../assets/icons/arrow-right.svg";
 import userDefault from "@/assets/icons/user-hacker.svg";
+import identifyFileTypeByUrl from "@/utils/functions/identifyFileTypeByUrl";
 
 export default function FullscreenStories({
   storiesData,
@@ -66,19 +67,34 @@ export default function FullscreenStories({
     }
   };
 
-  console.log("userDefault", userDefault.src);
+  // Função para determinar se a URL refere-se a um vídeo
+  function isVideoUrl(url: any) {
+    const videoExtensions = /\.(mp4|webm|ogg|mkv)$/i;
+    return videoExtensions.test(url);
+  }
+
+  // Função para determinar se a URL refere-se a uma imagem
+  function isImageUrl(url: any) {
+    const imageExtensions = /\.(jpeg|jpg|png|gif)$/i;
+    return imageExtensions.test(url);
+  }
 
   // Preparando os stories para o componente Stories
   const formattedStories = storiesData.map((group: any) =>
-    group.stories.map((story: any) => ({
-      url: story.media_urls[0],
-      header: {
-        heading: group.userProfiles.nickname,
-        subheading: new Date(story.created_at).toLocaleDateString(),
-        profileImage: group.userProfiles.avatar_url || userDefault.src,
-      },
-      type: story.media_urls[0].endsWith(".mp4") ? "video" : "image",
-    }))
+    group.stories.map((story: any) => {
+      const fileInfo = identifyFileTypeByUrl(story.media_urls[0]);
+      return {
+        preloadResource: true,
+        url: story.media_urls[0],
+        header: {
+          heading: group.userProfiles.nickname,
+          subheading: new Date(story.created_at).toLocaleDateString(),
+          profileImage: group.userProfiles.avatar_url || userDefault.src,
+        },
+        type: fileInfo.type,
+        duration: fileInfo.type === "video" ? undefined : 6000,
+      };
+    })
   );
 
   return (

@@ -1,11 +1,11 @@
 // import { GeistSans } from "geist/font/sans";
-import { Rajdhani } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { PostProvider } from "@/utils/contexts/PostContext";
 import { Toaster } from "react-hot-toast";
 
 // If loading a variable font, you don't need to specify the font weight
-const rajdhani = Rajdhani({
+const rajdhani = Inter({
   weight: "400",
   subsets: ["latin"],
   preload: true,

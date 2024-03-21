@@ -1,4 +1,6 @@
+import identifyFileTypeByUrl from "@/utils/functions/identifyFileTypeByUrl";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export const Modal = ({
   image,
@@ -18,6 +20,32 @@ export const Modal = ({
     visible: { scale: 1, opacity: 1, transition: { duration: 0.4 } },
   };
 
+  // Estado para armazenar a URL do objeto e o tipo de arquivo
+  const [filePreview, setFilePreview] = useState<any>({
+    url: null,
+    type: null,
+  });
+
+  // Atualize a URL do objeto e o tipo de arquivo somente quando a imagem mudar
+  useEffect(() => {
+    if (image) {
+      const objectURL = URL.createObjectURL(image);
+      const fileInfo = identifyFileTypeByUrl(objectURL);
+      setFilePreview({
+        url: objectURL,
+        type: fileInfo.type,
+      });
+
+      // Limpe a URL do objeto ao desmontar para evitar vazamentos de memória
+      return () => {
+        URL.revokeObjectURL(objectURL);
+      };
+    }
+  }, [image]);
+
+  const isImage = image && image.type.startsWith("image");
+  const isVideo = image && image.type.startsWith("video");
+
   return (
     <motion.div
       className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-60 z-50"
@@ -34,12 +62,23 @@ export const Modal = ({
         animate="visible"
         exit="hidden"
       >
-        {image && (
+        {isImage && filePreview.url && (
           <div className="w-full max-w-60 h-96 rounded-lg overflow-hidden mb-4 bg-black flex items-center justify-center">
             <img
-              src={URL.createObjectURL(image)}
+              src={filePreview.url}
               alt="Story Preview"
               className="min-h-full min-w-full object-cover"
+            />
+          </div>
+        )}
+        {isVideo && filePreview.url && (
+          <div className="w-full max-w-60 h-96 rounded-lg overflow-hidden mb-4 bg-black flex items-center justify-center">
+            <video
+              src={filePreview.url}
+              className="min-h-full min-w-full object-cover"
+              playsInline
+              autoPlay
+              loop
             />
           </div>
         )}
