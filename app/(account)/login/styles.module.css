@@ -1,6 +1,6 @@
 /* styles.module.css */
 .combinedEffect {
-    background: linear-gradient(270deg, #ff00ff, #00ffff);
+    background: linear-gradient(270deg, #ff00ff, #b304b3);
     background-size: 400% 400%;
   
     -webkit-animation: AnimationName 8s ease infinite;
@@ -12,8 +12,8 @@
   @-webkit-keyframes AnimationName {
     0% {
       background-position: 0% 50%;
-      box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
-        0 4px 6px -4px rgba(0, 255, 255, 0.5);
+      box-shadow: 0 4px 15px -3px rgba(255, 0, 255, 0.7),
+        0 4px 6px -4px rgba(255, 0, 255, 0.5)
     }
     50% {
       background-position: 100% 50%;
@@ -22,15 +22,15 @@
     }
     100% {
       background-position: 0% 50%;
-      box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
-        0 4px 6px -4px rgba(0, 255, 255, 0.5);
+      box-shadow: 0 4px 15px -3px rgba(255, 0, 255, 0.7),
+        0 4px 6px -4px rgba(255, 0, 255, 0.5)
     }
   }
   @-moz-keyframes AnimationName {
     0% {
       background-position: 0% 50%;
-      box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
-        0 4px 6px -4px rgba(0, 255, 255, 0.5);
+      box-shadow: 0 4px 15px -3px rgba(255, 0, 255, 0.7),
+        0 4px 6px -4px rgba(255, 0, 255, 0.5)
     }
     50% {
       background-position: 100% 50%;
@@ -39,15 +39,15 @@
     }
     100% {
       background-position: 0% 50%;
-      box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
-        0 4px 6px -4px rgba(0, 255, 255, 0.5);
+      box-shadow: 0 4px 15px -3px rgba(255, 0, 255, 0.7),
+        0 4px 6px -4px rgba(255, 0, 255, 0.5)
     }
   }
   @-o-keyframes AnimationName {
     0% {
       background-position: 0% 50%;
-      box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
-        0 4px 6px -4px rgba(0, 255, 255, 0.5);
+      box-shadow: 0 4px 15px -3px rgba(255, 0, 255, 0.7),
+        0 4px 6px -4px rgba(255, 0, 255, 0.5)
     }
     50% {
       background-position: 100% 50%;
@@ -56,15 +56,15 @@
     }
     100% {
       background-position: 0% 50%;
-      box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
-        0 4px 6px -4px rgba(0, 255, 255, 0.5);
+      box-shadow: 0 4px 15px -3px rgba(255, 0, 255, 0.7),
+        0 4px 6px -4px rgba(255, 0, 255, 0.5)
     }
   }
   @keyframes AnimationName {
     0% {
       background-position: 0% 50%;
-      box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
-        0 4px 6px -4px rgba(0, 255, 255, 0.5);
+      box-shadow: 0 4px 15px -3px rgba(255, 0, 255, 0.7),
+        0 4px 6px -4px rgba(255, 0, 255, 0.5)
     }
     50% {
       background-position: 100% 50%;
@@ -73,7 +73,87 @@
     }
     100% {
       background-position: 0% 50%;
-      box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
-        0 4px 6px -4px rgba(0, 255, 255, 0.5);
+      box-shadow: 0 4px 15px -3px rgba(255, 0, 255, 0.7),
+        0 4px 6px -4px rgba(255, 0, 255, 0.5)
     }
   }
+
+  /* styles.module.css */
+.combinedEffect2 {
+  background: linear-gradient(270deg, #00ffff, #06a8a8);
+  background-size: 400% 400%;
+
+  -webkit-animation: AnimationName2 8s ease infinite;
+  -moz-animation: AnimationName2 8s ease infinite;
+  -o-animation: AnimationName2 8s ease infinite;
+  animation: AnimationName2 8s ease infinite;
+}
+
+@-webkit-keyframes AnimationName2 {
+  0% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+  100% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+}
+@-moz-keyframes AnimationName2 {
+  0% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+  100% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+}
+@-o-keyframes AnimationName2 {
+  0% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+  100% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+}
+@keyframes AnimationName2 {
+  0% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+  100% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+}

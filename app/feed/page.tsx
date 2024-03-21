@@ -10,7 +10,7 @@ export default async function Feed() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  console.log('user', user)
+  // console.log('user', user)
 
   return (
     <div className="flex min-h-screen">
