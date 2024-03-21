@@ -1,0 +1,104 @@
+/* styles.module.css */
+.combinedEffect {
+  background: linear-gradient(270deg, #181820, #181820);
+  background-size: 400% 400%;
+
+  -webkit-animation: AnimationName 4s ease infinite;
+  -moz-animation: AnimationName 4s ease infinite;
+  -o-animation: AnimationName 4s ease infinite;
+  animation: AnimationName 4s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+  0% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0 4px 15px -3px rgba(255, 0, 255, 0.7),
+      0 4px 6px -4px rgba(255, 0, 255, 0.5);
+  }
+  100% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+}
+@-moz-keyframes AnimationName {
+  0% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0 4px 15px -3px rgba(255, 0, 255, 0.7),
+      0 4px 6px -4px rgba(255, 0, 255, 0.5);
+  }
+  100% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+}
+@-o-keyframes AnimationName {
+  0% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0 4px 15px -3px rgba(255, 0, 255, 0.7),
+      0 4px 6px -4px rgba(255, 0, 255, 0.5);
+  }
+  100% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+}
+@keyframes AnimationName {
+  0% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    background-position: 100% 50%;
+    box-shadow: 0 4px 15px -3px rgba(255, 0, 255, 0.7),
+      0 4px 6px -4px rgba(255, 0, 255, 0.5);
+  }
+  100% {
+    background-position: 0% 50%;
+    box-shadow: 0 4px 15px -3px rgba(0, 255, 255, 0.7),
+      0 4px 6px -4px rgba(0, 255, 255, 0.5);
+  }
+}
+
+.loading {
+  /* Defina a visibilidade inicial como visível */
+  opacity: 1;
+  z-index: 200;
+}
+
+/* Define a visibilidade como oculta após 4 segundos */
+@keyframes hideLoading {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Aplica a animação de ocultar após 4 segundos */
+.loading {
+  animation: hideLoading 4s forwards;
+  z-index: 200;
+}

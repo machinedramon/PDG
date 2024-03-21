@@ -1,0 +1,13 @@
+.dotSlider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100px;
+  overflow: hidden;
+}
+
+.dot {
+  background-color: #fff;
+  opacity: 0.3;
+  border-radius: 2px;
+}

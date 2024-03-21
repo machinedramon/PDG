@@ -3,7 +3,7 @@ import SubHeader from "./SubHeader";
 
 export default function Nav() {
   return (
-    <nav className="w-full h-full flex items-center justify-start bg-secondaryBlack">
+    <nav className="w-full h-full flex items-center justify-start bg-transparent">
       <Header />
       <SubHeader />
     </nav>
