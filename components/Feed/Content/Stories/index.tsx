@@ -669,7 +669,7 @@ export default function Stories() {
                     autoplay
                     loop
                     style={{ borderRadius: "8px" }}
-                  ></DotLottiePlayer>
+                  />
                 </div>
                 {/* Force crop to the lottieFile edges to round then */}
                 <div className="absolute -inset-0.5 border-[2.66px] border-[#1F1F27] rounded-md pointer-events-none"></div>
