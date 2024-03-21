@@ -1,0 +1,71 @@
+.fullscreenStories {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.fullscreenOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  z-index: 999; /* Certifique-se de que esta camada esteja acima de tudo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  z-index: 1010; /* Garante que o botão de fechar esteja acessível */
+}
+
+.arrow {
+  visibility: hidden;
+  position: fixed; /* Alterado de absolute para fixed */
+  top: 50%;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  /* A transformação abaixo centraliza a seta verticalmente */
+  transform: translateY(-50%);
+  z-index: 1010;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.5
+  ); /* Ajuste a cor conforme necessário */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease; /* Adiciona transição suave para o efeito de hover */
+}
+
+.arrowLeft:hover,
+.arrowRight:hover {
+  /* Combina translateY para manter a seta centrada com scale para o efeito de zoom */
+  transform: translateY(-50%) scale(1.05);
+}
+
+.arrowLeft {
+  left: 20px;
+}
+
+.arrowRight {
+  right: 20px;
+}
