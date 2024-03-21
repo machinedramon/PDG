@@ -5,7 +5,7 @@ import styles from "./styles.module.css";
 
 import { AnimatePresence, motion } from "framer-motion";
 
-import { signIn, signUp } from "./sign-functions";
+import { resetPassword, signIn, signUp } from "./sign-functions";
 import { useState } from "react";
 
 import Image from "next/image";
@@ -16,7 +16,11 @@ import animationRecovery from "@/assets/images/recovery.gif";
 export default function Login({
   searchParams,
 }: {
-  searchParams: { message?: string; success?: string };
+  searchParams: {
+    message?: string;
+    success?: string;
+    reset_success: string;
+  };
 }) {
   const [userEmail, setUserEmail] = useState<string>("");
   const [userResetEmail, setUserResetEmail] = useState<string>("");
@@ -66,10 +70,10 @@ export default function Login({
                   className={`max-sm:w-[90%] w-[70%] sm:w-full md:max-w-sm  hover:rotate-12 transition-all duration-300 ease-out scale-125`}
                 />
                 <h1 className="font-bold text-2xl xl:text-4xl text-pdgWhite-50 text-center">
-                  Esqueceu sua senha?
+                  Pronto para começar?
                 </h1>
                 <p className="font-normal mb-8 text-base text-pdgWhite-50 text-center">
-                  Calma, a gente te ajuda a recuperar!
+                  Entre ou cadastre-se para começar a explorar!
                 </p>
               </div>
             )}
@@ -156,6 +160,16 @@ export default function Login({
                     </p>
                   )}
                 </div>
+                {searchParams?.message && (
+                  <p className="bg-foreground/10 text-foreground text-center text-red-500">
+                    Usuário ou senha inválidos
+                  </p>
+                )}
+                {searchParams?.reset_success && (
+                  <p className="bg-foreground/10 text-foreground text-center text-green-500">
+                    {searchParams.reset_success}
+                  </p>
+                )}
               </form>
             ) : (
               <form
@@ -193,7 +207,7 @@ export default function Login({
                   </button>
 
                   <SubmitButton
-                    formAction={() => {}}
+                    formAction={resetPassword}
                     className={`rounded-lg  py-[18px] px-4 gap-[10px]
                   text-base font-bold text-pdgWhite-50 flex flex-1 justify-center 
                   ${userResetEmail === "" ? "bg-pdgBlack-500 cursor-not-allowed" : animatedGradient}
@@ -204,13 +218,12 @@ export default function Login({
                   >
                     Enviar
                   </SubmitButton>
-
-                  {searchParams?.message && (
-                    <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center text-red-500">
-                      Usuário ou senha inválidos
-                    </p>
-                  )}
                 </div>
+                {searchParams?.reset_success && (
+                  <p className="bg-foreground/10 text-foreground text-center text-green-500">
+                    {searchParams.reset_success}
+                  </p>
+                )}
               </form>
             )}
           </div>
