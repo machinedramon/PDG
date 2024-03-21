@@ -7,7 +7,6 @@ import ActionsBar from "./ActionsBar";
 import Tabs from "./Tabs";
 import Stories from "./Stories";
 import Posts from "./Posts";
-import Logo from "@/assets/images/Logo";
 
 interface SliderMethods {
   next: () => void;

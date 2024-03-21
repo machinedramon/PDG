@@ -17,7 +17,7 @@
     "@types/react-slick": "^0.23.13",
     "autoprefixer": "10.4.17",
     "css-doodle": "^0.38.4",
-    "framer-motion": "^11.0.8",
+    "framer-motion": "^11.0.18",
     "geist": "^1.2.1",
     "lodash": "^4.17.21",
     "next": "latest",
@@ -42,6 +42,9 @@
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
-    "encoding": "^0.1.13"
+    "encoding": "^0.1.13",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.12"
   }
 }

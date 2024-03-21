@@ -15,5 +15,6 @@ export async function GET(request: Request) {
   }
 
   // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${origin}/protected`);
+  return NextResponse.redirect(`${origin}/login?success=Usuário foi criado com sucesso, você já pode fazer o login!`);
+  // return NextResponse.redirect(`${origin}/protected`);
 }
