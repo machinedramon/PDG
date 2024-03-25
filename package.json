@@ -17,6 +17,8 @@
     "@types/react-slick": "^0.23.13",
     "autoprefixer": "10.4.17",
     "css-doodle": "^0.38.4",
+    "date-fns": "^3.6.0",
+    "date-fns-tz": "^2.0.1",
     "framer-motion": "^11.0.18",
     "geist": "^1.2.1",
     "lodash": "^4.17.21",

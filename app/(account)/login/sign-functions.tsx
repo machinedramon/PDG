@@ -3,6 +3,14 @@
 import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { format } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
+
+interface PropsData {
+    dia: string;
+    mes: string;
+    ano: string;
+}
 
 const signUp = async (formData: FormData) => {
 
@@ -95,39 +103,75 @@ const updateUserPassword = async (formData: FormData) => {
     return redirect("/login?reset_success=Senha resetada com sucesso");
 };
 
+const uploadImage = async (imageFile: File) => {
+
+    const supabase = createClient();
+    try {
+        // Faça o upload da imagem para o Supabase Storage
+        const { data, error } = await supabase.storage.from('avatars').upload(imageFile.name as string, imageFile);
+
+        if (error) {
+            throw error;
+        }
+
+        // O URL da imagem é retornado após o upload bem-sucedido
+
+        console.log('URL da imagem:', data.path);
+        return data.path
+    } catch (error) {
+        console.error('Erro ao fazer upload da imagem:', error);
+    }
+
+    const signedAvatar = supabase.storage.from('avatars').createSignedUrl(imageFile.name, 60000, {
+        transform: {
+            width: 200,
+            height: 200,
+        },
+    })
+
+    return signedAvatar
+}
+
 const updateUserData = async (formData: FormData) => {
 
     const id = formData.get("userId") as string;
     const first_name = formData.get("userName") as string;
     const last_name = formData.get("userSurname") as string;
     const nickname = formData.get("userNickname") as string;
-    // const birthDay = formData.get("birthDay");
-    // const birthMonth = formData.get("birthMonth");
-    // const birthYear = formData.get("birthYear");
+    const birthDay = formData.get("birthDay");
+    const birthMonth = formData.get("birthMonth");
+    const birthYear = formData.get("birthYear");
     const genero = formData.get("gender") as string;
-    const avatar = formData.get("userImage") as string;
+    const avatar = formData.get("userImage") as File;
 
     const supabase = createClient();
 
-    // const birthDate = new Date(birthYear, birthMonth, birthDay)
+    console.log(formData)
+    console.log(avatar)
 
-    const { data, error } = await supabase
-        .from('user_profiles')
-        .update({
-            first_name: first_name,
-            last_name: last_name,
-            nickname: '@' + nickname,
-            // birthDate: birthDate,
-            gender: genero,
-            avatar_url: avatar,
-        })
-        .match({ id: id })
+    const singedAvatar = uploadImage(avatar)
+    console.log('singedAvatar', singedAvatar)
 
-    console.log(data)
+    const dataString = `${birthDay}/${birthMonth}/${birthYear}`;
+    const dataObj = new Date(dataString);
 
-    if (error) {
-        return { error: error.message }; // Return a plain object with error message
-    }
+    // const { data, error } = await supabase
+    //     .from('user_profiles')
+    //     .update({
+    //         first_name: first_name,
+    //         last_name: last_name,
+    //         nickname: '@' + nickname,
+    //         birthdate: dataObj,
+    //         gender: genero,
+    //         avatar_url: avatar,
+    //     })
+    //     .match({ id: id })
+
+    // console.log(data)
+
+    // if (error) {
+    //     return { error: error.message }; // Return a plain object with error message
+    // }
 
     // return redirect("/login?reset_success=Senha resetada com sucesso");
 };

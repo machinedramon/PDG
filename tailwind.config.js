@@ -15,20 +15,20 @@ module.exports = {
         },
         primaryBlack: "#181820",
         secondaryBlack: "#1D1D24",
-        pdgBlack:{
+        pdgBlack: {
           900: "#1F1F27",
-          500:"#36363E"
+          500: "#36363E",
         },
-        pdgWhite:{
-          50:"#f8f8f8" //font-color
+        pdgWhite: {
+          50: "#f8f8f8", //font-color
         },
-        pdgBlue:{
-          500:"#00A8FC" //link
-        }
+        pdgBlue: {
+          500: "#00A8FC", //link
+        },
       },
-      backgroundImage:{
-        'login-bg':"url('../assets/images/login_bg.svg')"
-      }
+      backgroundImage: {
+        "login-bg": "url('../assets/images/login_bg.svg')",
+      },
     },
   },
   plugins: [],

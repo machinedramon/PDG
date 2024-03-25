@@ -37,6 +37,7 @@ export default function Login({
   const [birthMonth, setBirthMonth] = useState<string>("")
   const [birthYear, setBirthYear] = useState<string>("")
   const [userGender, setUserGender] = useState<string>("")
+  const [userPhone, setUserPhone] = useState<string>("")
 
   const [userImage, setUserImage] = useState<string | null>(null);
 
@@ -70,7 +71,7 @@ export default function Login({
   }, [])
 
   return (
-    <div className="mx-auto h-screen flex justify-center items-center bg-login-bg bg-cover bg-no-repeat transition-all duration-300 ease-out">
+    <div className="mx-auto sm:h-screen flex justify-center items-center bg-login-bg bg-cover bg-no-repeat transition-all duration-300 ease-out">
       <AnimatePresence mode="wait">
         <motion.div
           key={loginOption ? "login" : "forgotPassword"}
@@ -79,21 +80,22 @@ export default function Login({
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
           layout
-          className="max-[375px]:w-[80%] max-[430px]:w-[80%] max-sm:max-w-[90%] max-md:max-w-[80%] max-xg:max-w-[60%] max-sm:py-6 bg-pdgBlack-900 m-8 px-2 sm:px-4 md:px-8 sm:gap-8 rounded-2xl justify-center flex flex-col md:flex-row transition-all duration-300 ease-out"
+          className="max-[375px]:w-[80%] max-[430px]:w-[80%] max-sm:max-w-[90%] max-md:max-w-[80%] max-xg:max-w-[60%] max-sm:py-6 bg-pdgBlack-900 m-8 px-2 sm:px-4 md:px-4 lg:px-8 sm:gap-8 rounded-2xl justify-center flex flex-col md:flex-row transition-all duration-300 ease-out"
         >
           {searchParams?.login === 'unfinished' ?
-            <form className='flex flex-col gap-4 sm:gap-8 m-4 sm:m-8'>
+            <form className='flex flex-col gap-4 sm:gap-8 m-2 sm:m-4 md:sm-8'>
               <div className="gap-2 sm:gap-4 flex flex-col items-center">
                 <h1 className={`${styles.h1}`}>Quase lá</h1>
                 <p className={`${styles.text}`}>Precisamos de alguns detalhes adicionais antes de continuar</p>
               </div>
-              <div className='gap-x-8 flex'>
+              <div className='gap-8 flex flex-col md:flex-row'>
                 {/* AVATAR */}
-                <div className='gap-[10px] flex flex-col'>
+                <div className='gap-[10px] flex flex-col w-full'>
                   <p className={`${styles.text}`}>Avatar<span className="text-red-600"> *</span></p>
                   <label className='relative w-[160px] h-[160px] rounded-2xl bg-pdgBlack-500 overflow-hidden'>
                     <input
                       type='file'
+                      name="userImage"
                       accept='image/*'
                       onChange={handleImageUpload}
                       className='absolute inset-0 opacity-0 w-full h-full cursor-pointer'
@@ -113,8 +115,8 @@ export default function Login({
                 </div>
                 {/* nomes e generos */}
                 <div className='flex flex-col gap-y-8'>
-                  <div className='gap-x-2 sm:gap-x-4 flex flex-row'>
-                    <input className='hidden' type="text" name="userId" value={userId} required />
+                  <div className='gap-2 sm:gap-4 flex flex-col md:flex-row'>
+                    <input className='hidden' type="text" name="userId" value={userId} required readOnly />
                     <div className="flex flex-col gap-2">
                       <label
                         className={`${styles.text}`}
@@ -124,7 +126,7 @@ export default function Login({
                       </label>
 
                       <input
-                        className={`${styles.inputMoreDetails} w-56`}
+                        className={`${styles.inputMoreDetails} w-full md:w-56`}
                         name="userName"
                         type="text"
                         value={userName}
@@ -141,7 +143,7 @@ export default function Login({
                       </label>
 
                       <input
-                        className={`${styles.inputMoreDetails}  w-56`}
+                        className={`${styles.inputMoreDetails}  w-full md:w-56`}
                         name="userSurname"
                         type="text"
                         value={userSurname}
@@ -150,7 +152,7 @@ export default function Login({
                       />
                     </div>
                   </div>
-                  <div className='gap-x-2 sm:gap-x-4 flex flex-row'>
+                  <div className='gap-2 sm:gap-4 flex flex-col md:flex-row'>
                     <div className="flex flex-col gap-2">
                       <label
                         className={`${styles.text}`}
@@ -159,10 +161,10 @@ export default function Login({
                         Nome de usuário<span className="text-red-600"> *</span>
                       </label>
 
-                      <div className={`${styles.inputMoreDetails} w-56 relative flex items-center`}>
+                      <div className={`${styles.inputMoreDetails} w-full md:w-56 relative flex items-center`}>
                         @
                         <input
-                          className={` h-full bg-transparent w-56 absolute top-0 left-0 pl-8`}
+                          className={` h-full bg-transparent w-full md:w-56 absolute top-0 left-0 pl-8`}
                           name="userNickname"
                           type="text"
                           value={userNickname}
@@ -180,7 +182,7 @@ export default function Login({
                       </label>
 
                       <select
-                        className={`${styles.inputMoreDetails} w-56`}
+                        className={`${styles.inputMoreDetails} w-full md:w-56`}
                         name="gender"
                         value={userGender}
                         onChange={(e) => setUserGender(e.target.value)}
@@ -195,75 +197,99 @@ export default function Login({
                   </div>
                 </div>
               </div>
-              {/* DATA DE NASCIMENTO */}
-              <div className='flex flex-col gap-y-2'>
-                <label
-                  className={`${styles.text}`}
-                  htmlFor="name"
-                >
-                  Data de nascimento<span className="text-red-600"> *</span>
-                </label>
-                <div className="flex flex-row gap-2">
-                  <select
-                    className={`${styles.inputMoreDetails} w-[214.67px]`}
-                    name="day"
-                    value={birthDay}
-                    onChange={(e) => setBirthDay(e.target.value)}
-                    required
+              {/* DATA DE NASCIMENTO E TELEFONE */}
+              <div className='flex flex-col md:flex-row gap-4'>
+                <div className='flex flex-col gap-y-2 flex-1'>
+                  <label
+                    className={`${styles.text}`}
+                    htmlFor="name"
                   >
-                    <option value="">Dia</option>
-                    {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                      <option key={day} value={day}>
-                        {day}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    className={`${styles.inputMoreDetails} w-[214.67px]`}
-                    name="month"
-                    value={birthMonth}
-                    onChange={(e) => setBirthMonth(e.target.value)}
-                    required
-                  >
-                    <option value="">Mês</option>
-                    {[
-                      "Janeiro",
-                      "Fevereiro",
-                      "Março",
-                      "Abril",
-                      "Maio",
-                      "Junho",
-                      "Julho",
-                      "Agosto",
-                      "Setembro",
-                      "Outubro",
-                      "Novembro",
-                      "Dezembro",
-                    ].map((month, index) => (
-                      <option key={index + 1} value={index + 1}>
-                        {month}
-                      </option>
-                    ))}
-                  </select>
-
-                  <select
-                    className={`${styles.inputMoreDetails} w-[214.67px]`}
-                    name="year"
-                    value={birthYear}
-                    onChange={(e) => setBirthYear(e.target.value)}
-                    required
-                  >
-                    <option value="">Ano</option>
-                    {Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i).map(
-                      (year) => (
-                        <option key={year} value={year}>
-                          {year}
+                    Data de nascimento<span className="text-red-600"> *</span>
+                  </label>
+                  <div className="flex flex-col md:flex-row gap-2">
+                    <select
+                      className={`${styles.inputMoreDetails} `}
+                      name="birthDay"
+                      value={birthDay}
+                      onChange={(e) => setBirthDay(e.target.value)}
+                      required
+                    >
+                      <option value="">Dia</option>
+                      {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+                        <option key={day} value={day}>
+                          {day}
                         </option>
-                      )
-                    )}
-                  </select>
+                      ))}
+                    </select>
+
+
+                    <select
+                      className={`${styles.inputMoreDetails} `}
+                      name="birthMonth"
+                      value={birthMonth}
+                      onChange={(e) => setBirthMonth(e.target.value)}
+                      required
+                    >
+                      <option value="">Mês</option>
+                      {[
+                        "Janeiro",
+                        "Fevereiro",
+                        "Março",
+                        "Abril",
+                        "Maio",
+                        "Junho",
+                        "Julho",
+                        "Agosto",
+                        "Setembro",
+                        "Outubro",
+                        "Novembro",
+                        "Dezembro",
+                      ].map((month, index) => (
+                        <option key={index + 1} value={index + 1}>
+                          {month}
+                        </option>
+                      ))}
+                    </select>
+
+
+                    <select
+                      className={`${styles.inputMoreDetails} `}
+                      name="birthYear"
+                      value={birthYear}
+                      onChange={(e) => setBirthYear(e.target.value)}
+                      required
+                    >
+                      <option value="">Ano</option>
+                      {Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i).map(
+                        (year) => (
+                          <option key={year} value={year}>
+                            {year}
+                          </option>
+                        )
+                      )}
+                    </select>
+
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2  flex-1">
+                  <label
+                    className={`${styles.text}`}
+                    htmlFor="phone"
+                  >
+                    Telefone<span className="text-red-600"> *</span>
+                  </label>
+
+                  <input
+                    className={`${styles.inputMoreDetails} `}
+                    name="phone"
+                    type="tel"
+                    value={userPhone}
+                    onChange={(e) => setUserPhone(e.target.value)}
+                    required
+                  />
                 </div>
               </div>
+
               <SubmitButton
                 formAction={updateUserData}
                 className={`w-full rounded-lg  py-[18px] px-4 gap-[10px]
@@ -361,7 +387,7 @@ export default function Login({
                         </button>
                       </div>
                     </div>
-                    <div className="flex gap-4 items-center flex-col sm:flex-row max-sm:flex-row">
+                    <div className="flex gap-4 items-center flex-col md:flex-row max-md:flex-row">
                       <SubmitButton
                         formAction={signIn}
                         className={`w-full rounded-lg  py-[18px] px-4 gap-[10px]
