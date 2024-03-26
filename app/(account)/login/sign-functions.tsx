@@ -111,7 +111,9 @@ const uploadImage = async (imageFile: File, id: string) => {
     if (imageFile) {
         const fileExtension = imageFile.name.split(".").pop();
         const fileName = `${new Date().getTime()}.${fileExtension}`;
-        const filePath = `${id}/avatar/${fileName}`;
+        const filePath = `/${id}/avatar/${fileName}`;
+
+        console.log('filePath', filePath)
 
         try {
             const { error: uploadError } = await supabase.storage
@@ -150,10 +152,24 @@ const uploadImage = async (imageFile: File, id: string) => {
     }
 }
 
+const updateUserPhone = async (id: string, phone: string) => {
 
+    const supabase = createClient();
 
+    const { data, error } = await supabase.auth.updateUser({
+        phone: phone
+    })
+
+    console.log(data)
+
+    if (error) {
+        return { error: error.message };
+    }
+}
 
 const updateUserData = async (formData: FormData) => {
+
+    const supabase = createClient();
 
     const id = formData.get("userId") as string;
     const first_name = formData.get("userName") as string;
@@ -164,19 +180,13 @@ const updateUserData = async (formData: FormData) => {
     const birthYear = formData.get("birthYear");
     const genero = formData.get("gender") as string;
     const avatar = formData.get("userImage") as File;
+    const phone = formData.get("userPhone") as string;
 
-    const supabase = createClient();
+    // const signedAvatar = uploadImage(avatar, id)
 
-    console.log(formData)
-    console.log(avatar)
+    // const dataObjeto = new Date(Number(birthYear), Number(birthMonth), Number(birthDay))
 
-    const signedAvatar = uploadImage(avatar, id)
-    console.log('singedAvatar', signedAvatar)
-
-    const dataString = `${birthDay}/${birthMonth}/${birthYear}`;
-    const dataObj = new Date(dataString);
-
-    console.log(dataObj)
+    if (phone) { updateUserPhone(id, phone) }
 
     // const { data, error } = await supabase
     //     .from('user_profiles')
@@ -184,16 +194,18 @@ const updateUserData = async (formData: FormData) => {
     //         first_name: first_name,
     //         last_name: last_name,
     //         nickname: '@' + nickname,
-    //         birthdate: dataObj,
+    //         birthdate: dataObjeto,
     //         gender: genero,
-    //         avatar_url: avatar,
+    //         avatar_url: signedAvatar,
     //     })
     //     .match({ id: id })
 
-    // console.log(data)
-
     // if (error) {
     //     return { error: error.message }; // Return a plain object with error message
+    // }
+
+    // if (data) {
+    //     return redirect('/feed')
     // }
 
     // return redirect("/login?reset_success=Senha resetada com sucesso");

@@ -281,7 +281,7 @@ export default function Login({
 
                   <input
                     className={`${styles.inputMoreDetails} `}
-                    name="phone"
+                    name="userPhone"
                     type="tel"
                     value={userPhone}
                     onChange={(e) => setUserPhone(e.target.value)}
