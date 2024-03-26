@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { toast } from "react-hot-toast";
 import { format } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 
@@ -53,7 +54,7 @@ const signIn = async (formData: FormData) => {
         return error;
     }
 
-    console.log(data)
+    // console.log(data)
 
     if (data.user.phone === '') {
         return redirect(`/login?login=unfinished&user_id=${data.user.id}`)
@@ -103,34 +104,54 @@ const updateUserPassword = async (formData: FormData) => {
     return redirect("/login?reset_success=Senha resetada com sucesso");
 };
 
-const uploadImage = async (imageFile: File) => {
+const uploadImage = async (imageFile: File, id: string) => {
 
     const supabase = createClient();
-    try {
-        // Faça o upload da imagem para o Supabase Storage
-        const { data, error } = await supabase.storage.from('avatars').upload(imageFile.name as string, imageFile);
+    let imageUrl = null;
+    if (imageFile) {
+        const fileExtension = imageFile.name.split(".").pop();
+        const fileName = `${new Date().getTime()}.${fileExtension}`;
+        const filePath = `${id}/avatar/${fileName}`;
 
-        if (error) {
-            throw error;
+        try {
+            const { error: uploadError } = await supabase.storage
+                .from("users")
+                .upload(filePath, imageFile);
+
+            if (uploadError) {
+                throw new Error(uploadError.message);
+            }
+
+            const expiresIn = 60 * 60 * 24 * 365 * 20; // 20 years in seconds
+            const { data: signedUrlData, error: signedUrlError } =
+                await supabase.storage
+                    .from("users")
+                    .createSignedUrl(filePath, expiresIn, {
+                        transform: {
+                            width: 200,
+                            height: 200,
+                        },
+                    });
+
+            if (signedUrlError) {
+                throw new Error(signedUrlError.message);
+            }
+
+            imageUrl = signedUrlData.signedUrl;
+            console.log(imageUrl)
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                toast.error(`Erro no upload: ${error.message}`);
+            } else {
+                toast.error("Erro desconhecido no upload.");
+            }
+            return imageUrl;
         }
-
-        // O URL da imagem é retornado após o upload bem-sucedido
-
-        console.log('URL da imagem:', data.path);
-        return data.path
-    } catch (error) {
-        console.error('Erro ao fazer upload da imagem:', error);
     }
-
-    const signedAvatar = supabase.storage.from('avatars').createSignedUrl(imageFile.name, 60000, {
-        transform: {
-            width: 200,
-            height: 200,
-        },
-    })
-
-    return signedAvatar
 }
+
+
+
 
 const updateUserData = async (formData: FormData) => {
 
@@ -149,11 +170,13 @@ const updateUserData = async (formData: FormData) => {
     console.log(formData)
     console.log(avatar)
 
-    const singedAvatar = uploadImage(avatar)
-    console.log('singedAvatar', singedAvatar)
+    const signedAvatar = uploadImage(avatar, id)
+    console.log('singedAvatar', signedAvatar)
 
     const dataString = `${birthDay}/${birthMonth}/${birthYear}`;
     const dataObj = new Date(dataString);
+
+    console.log(dataObj)
 
     // const { data, error } = await supabase
     //     .from('user_profiles')
